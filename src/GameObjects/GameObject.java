@@ -2,22 +2,18 @@ package GameObjects;
 
 import GameEvents.GameEventArgs;
 import GameObjects.Orders.Order;
+import Physics.PhysicsComponent;
 
 import java.util.ArrayList;
 
 public class GameObject {
-    boolean active;
     boolean dirty;
+    public boolean Active;
     public int Health;
     public float Timescale;
     public Hostility Hostility;
     public ArrayList<Order> Orders;
-
-    public boolean IsActive()
-    {
-        return active;
-    }
-
+    public PhysicsComponent Physics;
 
     public GameObject()
     {
@@ -29,8 +25,9 @@ public class GameObject {
     }
     public GameObject(int health, boolean active)
     {
-        this.Health = health;
-        this.active = active;
+        Health = health;
+        Active = active;
+        Physics = new PhysicsComponent();
     }
     
     public void OnGameEvent(GameObject src, GameEventArgs args)
