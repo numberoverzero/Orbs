@@ -13,29 +13,24 @@ import java.util.ArrayList;
  */
 public class RenderPipeline {
     public static final RenderPass[] Passes = {RenderPass.Background, RenderPass.PreEffect,
-                                               RenderPass.Effects, RenderPass.PostEffect,
-                                               RenderPass.UI, RenderPass.Debug};
+            RenderPass.Effects, RenderPass.PostEffect,
+            RenderPass.UI, RenderPass.Debug};
     ArrayList<IRenderEffect> effects;
     FrameBuffer buffer;
 
-    public RenderPipeline()
-    {
+    public RenderPipeline() {
         effects = new ArrayList<IRenderEffect>();
     }
-    
-    public void LoadContent()
-    {
 
-        for(IRenderEffect effect : effects)
-        {
+    public void LoadContent() {
+
+        for (IRenderEffect effect : effects) {
             effect.LoadContent();
         }
     }
 
-    void ApplyEffects()
-    {
-        for(IRenderEffect effect : effects)
-        {
+    void ApplyEffects() {
+        for (IRenderEffect effect : effects) {
             SpriteBatch batch = new SpriteBatch();
             effect.ApplyEffect(buffer, buffer);
         }

@@ -2,22 +2,28 @@ package Main;
 
 import com.badlogic.gdx.ApplicationListener;
 
-public class Game implements ApplicationListener{
+public class Game implements ApplicationListener {
     @Override
-    public void create() { }
+    public void create() {
+    }
 
     @Override
-    public void resize(int width, int height) { }
+    public void resize(int width, int height) {
+    }
 
     @Override
-    public void render() { }
+    public void render() {
+    }
 
     @Override
-    public void pause() { }
+    public void pause() {
+    }
 
     @Override
-    public void resume() { }
+    public void resume() {
+    }
 
     @Override
-    public void dispose() { }
+    public void dispose() {
+    }
 }

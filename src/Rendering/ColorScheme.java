@@ -16,44 +16,38 @@ public class ColorScheme {
     Color defaultColor;
 
     Map<Hostility, Map<RenderLayer, Color>> scheme;
-    
-    public ColorScheme()
-    {
+
+    public ColorScheme() {
         this(defaultDefaultColor);
     }
 
-    public ColorScheme(Color defaultColor)
-    {
+    public ColorScheme(Color defaultColor) {
         scheme = new HashMap<Hostility, Map<RenderLayer, Color>>();
         this.defaultColor = defaultColor;
     }
 
-    public Color GetColor(Hostility hostility, RenderLayer layer)
-    {
-        if(!scheme.containsKey(hostility))
+    public Color GetColor(Hostility hostility, RenderLayer layer) {
+        if (!scheme.containsKey(hostility))
             CreateLayerColorMap(hostility);
-        if(!scheme.get(hostility).containsKey(layer))
+        if (!scheme.get(hostility).containsKey(layer))
             return defaultColor;
         else
             return scheme.get(hostility).get(layer);
     }
-    
-    public void SetColor(Hostility hostility, RenderLayer layer, Color color)
-    {
-        if(!scheme.containsKey(hostility))
+
+    public void SetColor(Hostility hostility, RenderLayer layer, Color color) {
+        if (!scheme.containsKey(hostility))
             CreateLayerColorMap(hostility);
         scheme.get(hostility).put(layer, color);
     }
 
-    public void LoadFromFile(String filename, String profilename)
-    {
+    public void LoadFromFile(String filename, String profilename) {
     }
 
-    public void SaveToFile(String filename, String profilename)
-    {
+    public void SaveToFile(String filename, String profilename) {
     }
-    private void CreateLayerColorMap(Hostility hostility)
-    {
+
+    private void CreateLayerColorMap(Hostility hostility) {
         scheme.put(hostility, new HashMap<RenderLayer, Color>());
     }
 }

@@ -1,19 +1,13 @@
 package Physics;
 
-import Math.Vec2;
 import Math.Rect;
-/**
- * User: Joe Laptop
- * Date: 3/28/12
- * Time: 5:02 PM
- */
+import Math.Vec2;
+
 public class PhysicsComponent {
     public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
     public float Rotation, Mass, MaxSpeed;
 
-    
-    public PhysicsComponent()
-    {
+    public PhysicsComponent() {
         Position = Vec2.Zero();
         Velocity = Vec2.Zero();
         Acceleration = Vec2.Zero();
@@ -23,11 +17,10 @@ public class PhysicsComponent {
         Mass = 1;
         MaxSpeed = Float.MAX_VALUE;
     }
-    
-    public void Update(float dt)
-    {
-        Acceleration.X *= (1-DecayAcceleration.X);
-        Acceleration.Y *= (1-DecayAcceleration.Y);
+
+    public void Update(float dt) {
+        Acceleration.X *= (1 - DecayAcceleration.X);
+        Acceleration.Y *= (1 - DecayAcceleration.Y);
 
         Velocity.X += Acceleration.X * dt;
         Velocity.Y += Acceleration.Y * dt;
@@ -37,22 +30,18 @@ public class PhysicsComponent {
         Position.Y += Velocity.Y * dt;
     }
 
-    void ClampVelocity()
-    {
-        if(Velocity.Mag2() > MaxSpeed * MaxSpeed)
-        {
+    void ClampVelocity() {
+        if (Velocity.Mag2() > MaxSpeed * MaxSpeed) {
             Velocity.Normalize();
             Velocity.Mul(MaxSpeed);
         }
     }
-    
-    public Rect GetAABB()
-    {
+
+    public Rect GetAABB() {
         return Rect.CenteredAt(Position, Dimensions.X, Dimensions.Y);
     }
-    
-    public Rect GetMinAABB()
-    {
+
+    public Rect GetMinAABB() {
         return GetAABB().MinBoundsOf(Rotation);
     }
 }

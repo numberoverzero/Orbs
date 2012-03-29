@@ -8,13 +8,12 @@ package GameEvents;
 public class GameEventArgs {
     String msg;
 
-    public GameEventArgs()
-    {
+    public GameEventArgs() {
         msg = "";
     }
-    public GameEventArgs(String msg)
-    {
+
+    public GameEventArgs(String msg) {
         this.msg = msg;
     }
-    
+
 }

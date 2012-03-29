@@ -15,23 +15,21 @@ public class GameObject {
     public ArrayList<Order> Orders;
     public PhysicsComponent Physics;
 
-    public GameObject()
-    {
+    public GameObject() {
         this(0, false);
     }
-    public GameObject(int health)
-    {
+
+    public GameObject(int health) {
         this(health, true);
     }
-    public GameObject(int health, boolean active)
-    {
+
+    public GameObject(int health, boolean active) {
         Health = health;
         Active = active;
         Physics = new PhysicsComponent();
     }
-    
-    public void OnGameEvent(GameObject src, GameEventArgs args)
-    {
+
+    public void OnGameEvent(GameObject src, GameEventArgs args) {
 
     }
 }

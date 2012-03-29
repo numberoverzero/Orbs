@@ -1,3 +1,3 @@
 package Rendering;
 
-public enum RenderLayer { None, Base, Highlight }
+public enum RenderLayer {None, Base, Highlight}

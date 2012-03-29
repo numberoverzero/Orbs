@@ -9,5 +9,6 @@ import GameEvents.GameEvent;
  */
 public interface IEventWatcher {
     EventWatchTiming GetWatchTiming();
+
     void InspectEvent(GameEvent event);
 }
