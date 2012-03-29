@@ -94,27 +94,27 @@ public class Vec2 {
         return RotateAbout(Vec2.Zero(), theta);
     }
     
-    public Vec2 RotateAbout(Vec2 origin, float theta)
+    public Vec2 RotateAbout(Vec2 pivot, float theta)
     {
-        double dx = X - origin.X;
-        double dy = Y - origin.Y;
+        double dx = X - pivot.X;
+        double dy = Y - pivot.Y;
         double st = Math.sin(theta);
         double ct = Math.cos(theta);
 
-        double x = origin.X + (ct * dx) - (st * dy);
-        double y = origin.Y + (st * dx) + (ct * dy);
+        double x = pivot.X + (ct * dx) - (st * dy);
+        double y = pivot.Y + (st * dx) + (ct * dy);
         return new Vec2(x, y);
     }
     
-    public static void RotateAbout(Vec2 point, Vec2 origin, float theta)
+    public static void RotateAbout(Vec2 point, Vec2 pivot, float theta)
     {
-        double dx = point.X - origin.X;
-        double dy = point.Y - origin.Y;
+        double dx = point.X - pivot.X;
+        double dy = point.Y - pivot.Y;
         double st = Math.sin(theta);
         double ct = Math.cos(theta);
 
-        double x = origin.X + (ct * dx) - (st * dy);
-        double y = origin.Y + (st * dx) + (ct * dy);
+        double x = pivot.X + (ct * dx) - (st * dy);
+        double y = pivot.Y + (st * dx) + (ct * dy);
         point.X = (float)x;
         point.Y = (float)y;
     }
@@ -135,7 +135,6 @@ public class Vec2 {
     {
         return new Vec2(1);
     }
-
 
     
 }
