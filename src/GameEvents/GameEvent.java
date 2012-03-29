@@ -28,6 +28,7 @@ public class GameEvent {
 
     private void Fire() {
         hasFired = true;
-        dst.OnGameEvent(src, args);
+        if (dst != null)
+            dst.OnGameEvent(src, args);
     }
 }

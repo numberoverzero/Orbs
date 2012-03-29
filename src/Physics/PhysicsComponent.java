@@ -18,6 +18,17 @@ public class PhysicsComponent {
         MaxSpeed = Float.MAX_VALUE;
     }
 
+    public PhysicsComponent(PhysicsComponent other) {
+        Position = new Vec2(other.Position);
+        Velocity = new Vec2(other.Velocity);
+        Acceleration = new Vec2(other.Acceleration);
+        Dimensions = new Vec2(other.Dimensions);
+        DecayAcceleration = new Vec2(other.DecayAcceleration);
+        Rotation = other.Rotation;
+        Mass = other.Mass;
+        MaxSpeed = other.MaxSpeed;
+    }
+
     public void Update(float dt) {
         Acceleration.X *= (1 - DecayAcceleration.X);
         Acceleration.Y *= (1 - DecayAcceleration.Y);

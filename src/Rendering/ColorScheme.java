@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class ColorScheme {
     static final Color defaultDefaultColor = new Color(0, 0, 0, 0);
-    Color defaultColor;
+    public Color DefaultColor;
 
     Map<Hostility, Map<RenderLayer, Color>> scheme;
 
@@ -23,14 +23,14 @@ public class ColorScheme {
 
     public ColorScheme(Color defaultColor) {
         scheme = new HashMap<Hostility, Map<RenderLayer, Color>>();
-        this.defaultColor = defaultColor;
+        this.DefaultColor = defaultColor;
     }
 
     public Color GetColor(Hostility hostility, RenderLayer layer) {
         if (!scheme.containsKey(hostility))
             CreateLayerColorMap(hostility);
         if (!scheme.get(hostility).containsKey(layer))
-            return defaultColor;
+            return DefaultColor;
         else
             return scheme.get(hostility).get(layer);
     }

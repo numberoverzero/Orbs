@@ -79,4 +79,12 @@ public class GameEventManager {
         queuedEvents.clear();
     }
 
+    static GameEventManager singleton;
+
+    public static GameEventManager GlobalEventManager() {
+        if (singleton == null)
+            singleton = new GameEventManager();
+        return singleton;
+    }
+
 }

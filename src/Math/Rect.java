@@ -7,10 +7,6 @@ public class Rect {
         this(0, 0, 0, 0);
     }
 
-    public Rect(float width, float height) {
-        this(0, 0, width, height);
-    }
-
     public Rect(float x, float y, float width, float height) {
         X = x;
         Y = y;
