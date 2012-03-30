@@ -31,7 +31,6 @@ public class OrbitBehavior implements IBehavior {
 
 // --------------------- Interface IBehavior ---------------------
 
-
     @Override
     public void Apply(GameObject object) {
         UpdateOrder(object);

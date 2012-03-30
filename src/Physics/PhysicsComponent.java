@@ -9,7 +9,8 @@ public class PhysicsComponent {
     static final float DEFAULT_ACCEL_DECAY = 0.3f;
 
     public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
-    public float Rotation, Mass, MaxSpeed;
+    public float Mass, MaxSpeed;
+    public double Rotation;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 

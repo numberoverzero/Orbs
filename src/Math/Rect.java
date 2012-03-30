@@ -7,7 +7,7 @@ public class Rect {
 
 // -------------------------- STATIC METHODS --------------------------
 
-    public static Rect MinBoundsOf(Rect rect, float rot) {
+    public static Rect MinBoundsOf(Rect rect, double rot) {
         Vec2 pivot = rect.Center();
         Vec2[] corners = rect.Corners();
         float minX = pivot.X, maxX = pivot.X, minY = pivot.Y, maxY = pivot.Y;
@@ -103,7 +103,7 @@ public class Rect {
                 (rect1.Bottom() <= rect2.Top()));
     }
 
-    public Rect MinBoundsOf(float rot) {
+    public Rect MinBoundsOf(double rot) {
         return MinBoundsOf(this, rot);
     }
 

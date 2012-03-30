@@ -25,21 +25,18 @@ public final class Rectangle {
     }
 
     public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 dimensions, Color color) {
-        Draw(batch, pos, Vec2.Zero(), dimensions, 0, color);
+        Draw(batch, pos, dimensions, 0, color);
     }
 
-    public static void DrawCentered(SpriteBatch batch, Vec2 pos, Vec2 dimensions, double rot, Color color) {
+    public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 dimensions, double rot, Color color) {
         Vec2 origin = dimensions.DividedBy(2);
-        Draw(batch, pos.Minus(origin), origin, dimensions, rot, color);
-    }
-
-    public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 origin, Vec2 dimensions, double rot, Color color) {
         batch.setColor(color);
-        batch.draw(texture, pos.X, pos.Y, origin.X, origin.Y, dimensions.X, dimensions.Y,
+        batch.draw(texture, pos.X - origin.X, pos.Y - origin.Y, origin.X, origin.Y, dimensions.X, dimensions.Y,
                 1, 1, Util.ToDegrees(rot), 0, 0, 1, 1, false, false);
     }
 
     public static void DrawOutline(SpriteBatch batch, Vec2 pos, Vec2 dimensions, double rot, Color color, float lineWidth) {
+        batch.setColor(color);
         Vec2 dim2 = dimensions.DividedBy(2);
         Vec2[] corners = new Vec2[]{
                 new Vec2(-dim2.X + lineWidth, -dim2.Y + lineWidth),
@@ -55,10 +52,14 @@ public final class Rectangle {
 
         Vec2 scale = new Vec2(0, lineWidth);
         Vec2 segment;
+        float lineRot;
         for (int i = 0; i < 4; i++) {
             segment = (corners[i + 1].Minus(corners[i]));
             scale.X = segment.Mag() + lineWidth;
-            Draw(batch, corners[i], Vec2.Zero(), scale, segment.Angle(), color);
+            lineRot = (float) segment.Angle();
+            batch.draw(texture, corners[i].X, corners[i].Y, 0, 0, scale.X, scale.Y,
+                    1, 1, Util.ToDegrees(lineRot), 0, 0, 1, 1, false, false);
+            //Draw(batch, corners[i], Vec2.Zero(), scale, segment.Angle(), color);
         }
     }
 }

@@ -48,8 +48,8 @@ public final class Collision {
 
     // Returns TRUE if the objects do no intersect in refObject's 0 rotation origin-centered perspective
     boolean DoesNotIntersectInRefFrame(GameObject refObject, GameObject relObject) {
-        float refRotation = refObject.Physics.Rotation;
-        float relRotation = relObject.Physics.Rotation;
+        double refRotation = refObject.Physics.Rotation;
+        double relRotation = relObject.Physics.Rotation;
 
         Rect refRect = refObject.Physics.GetAABB();
         Rect relRect = relObject.Physics.GetAABB();
@@ -66,7 +66,7 @@ public final class Collision {
 
         // Center relRect at relCenter, then grab it's minAABB
         relRect.CenterAt(relCenter);
-        float theta = relRotation - refRotation;
+        double theta = relRotation - refRotation;
         Rect minRelAABB = relRect.MinBoundsOf(theta);
 
         // Check our minRelAABB against our refComponent,

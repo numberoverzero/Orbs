@@ -8,6 +8,7 @@ public interface IBehavior {
     void Apply(GameObject object);
 
     void Destroy();
+
     boolean MeetsCriteria(GameObject object);
 
     void Update(float dt);

@@ -18,11 +18,11 @@ public class Vec2 {
         return new Vec2(Math.cos(theta), Math.sin(theta));
     }
 
-    public static void Rotate(Vec2 vec, float theta) {
+    public static void Rotate(Vec2 vec, double theta) {
         RotateAbout(vec, Vec2.Zero(), theta);
     }
 
-    public static void RotateAbout(Vec2 point, Vec2 pivot, float theta) {
+    public static void RotateAbout(Vec2 point, Vec2 pivot, double theta) {
         double dx = point.X - pivot.X;
         double dy = point.Y - pivot.Y;
         double st = Math.sin(theta);

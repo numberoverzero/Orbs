@@ -1,7 +1,7 @@
 package Rendering;
 
 import GameObjects.Hostility;
-import org.lwjgl.util.Color;
+import com.badlogic.gdx.graphics.Color;
 
 import java.util.HashMap;
 import java.util.Map;

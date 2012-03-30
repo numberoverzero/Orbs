@@ -7,13 +7,15 @@ import GameObjects.Behaviors.IBehavior;
 import GameObjects.Orders.Order;
 import Physics.PhysicsComponent;
 import Rendering.ColorScheme;
+import Rendering.RenderPass;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
 public class GameObject {
 // ------------------------------ FIELDS ------------------------------
 
-    public static GameEventManager EventManager;
+    public static GameEventManager EventManager = GameEventManager.GlobalEventManager();
     public boolean Active;
     public int Health;
     public float Timescale;
@@ -56,6 +58,9 @@ public class GameObject {
     }
 
 // -------------------------- OTHER METHODS --------------------------
+
+    public void Draw(SpriteBatch batch, RenderPass pass) {
+    }
 
     public boolean HasOrder() {
         return !(CurrentOrder == Order.None || CurrentOrder == Order.Any);
