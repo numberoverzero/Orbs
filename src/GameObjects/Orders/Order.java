@@ -16,5 +16,4 @@ public enum Order {
     // Engagement orders
     Roam,
     Swarm
-
 }

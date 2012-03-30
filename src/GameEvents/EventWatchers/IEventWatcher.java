@@ -8,6 +8,8 @@ import GameEvents.GameEvent;
  * Time: 5:43 PM
  */
 public interface IEventWatcher {
+// -------------------------- OTHER METHODS --------------------------
+
     EventWatchTiming GetWatchTiming();
 
     void InspectEvent(GameEvent event);

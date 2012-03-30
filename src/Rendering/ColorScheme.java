@@ -12,10 +12,14 @@ import java.util.Map;
  * Time: 9:15 AM
  */
 public class ColorScheme {
+// ------------------------------ FIELDS ------------------------------
+
     static final Color defaultDefaultColor = new Color(0, 0, 0, 0);
     public Color DefaultColor;
 
     Map<Hostility, Map<RenderLayer, Color>> scheme;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public ColorScheme() {
         this(defaultDefaultColor);
@@ -26,6 +30,8 @@ public class ColorScheme {
         this.DefaultColor = defaultColor;
     }
 
+// -------------------------- OTHER METHODS --------------------------
+
     public Color GetColor(Hostility hostility, RenderLayer layer) {
         if (!scheme.containsKey(hostility))
             CreateLayerColorMap(hostility);
@@ -35,10 +41,8 @@ public class ColorScheme {
             return scheme.get(hostility).get(layer);
     }
 
-    public void SetColor(Hostility hostility, RenderLayer layer, Color color) {
-        if (!scheme.containsKey(hostility))
-            CreateLayerColorMap(hostility);
-        scheme.get(hostility).put(layer, color);
+    private void CreateLayerColorMap(Hostility hostility) {
+        scheme.put(hostility, new HashMap<RenderLayer, Color>());
     }
 
     public void LoadFromFile(String filename, String profilename) {
@@ -47,7 +51,9 @@ public class ColorScheme {
     public void SaveToFile(String filename, String profilename) {
     }
 
-    private void CreateLayerColorMap(Hostility hostility) {
-        scheme.put(hostility, new HashMap<RenderLayer, Color>());
+    public void SetColor(Hostility hostility, RenderLayer layer, Color color) {
+        if (!scheme.containsKey(hostility))
+            CreateLayerColorMap(hostility);
+        scheme.get(hostility).put(layer, color);
     }
 }

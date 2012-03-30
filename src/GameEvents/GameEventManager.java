@@ -6,12 +6,25 @@ import GameEvents.EventWatchers.IEventWatcher;
 import java.util.ArrayList;
 
 public class GameEventManager {
+// ------------------------------ FIELDS ------------------------------
+
+    static GameEventManager singleton;
 
     boolean isUpdating;
     ArrayList<GameEvent> events;
     ArrayList<GameEvent> queuedEvents;
     ArrayList<GameEvent> completedEvents;
     ArrayList<IEventWatcher> watchers;
+
+// -------------------------- STATIC METHODS --------------------------
+
+    public static GameEventManager GlobalEventManager() {
+        if (singleton == null)
+            singleton = new GameEventManager();
+        return singleton;
+    }
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public GameEventManager() {
         isUpdating = false;
@@ -21,18 +34,29 @@ public class GameEventManager {
         watchers = new ArrayList<IEventWatcher>();
     }
 
+// -------------------------- OTHER METHODS --------------------------
+
     public void AddEvent(GameEvent event) {
         ArrayList<GameEvent> eventList = isUpdating ? queuedEvents : events;
         eventList.add(event);
         CheckWatchers(event, EventWatchTiming.OnCreate);
     }
 
-    public void RemoveEvent(GameEvent event) {
-        events.remove(event);
+    void CheckWatchers(GameEvent event, EventWatchTiming timing) {
+        EventWatchTiming watcherTiming;
+        for (IEventWatcher watcher : watchers) {
+            watcherTiming = watcher.GetWatchTiming();
+            if ((watcherTiming == timing) || (watcherTiming == EventWatchTiming.Any))
+                watcher.InspectEvent(event);
+        }
     }
 
     public void AddWatcher(IEventWatcher watcher) {
         watchers.add(watcher);
+    }
+
+    public void RemoveEvent(GameEvent event) {
+        events.remove(event);
     }
 
     public void RemoveWatcher(IEventWatcher watcher) {
@@ -58,15 +82,6 @@ public class GameEventManager {
         }
     }
 
-    void CheckWatchers(GameEvent event, EventWatchTiming timing) {
-        EventWatchTiming watcherTiming;
-        for (IEventWatcher watcher : watchers) {
-            watcherTiming = watcher.GetWatchTiming();
-            if ((watcherTiming == timing) || (watcherTiming == EventWatchTiming.Any))
-                watcher.InspectEvent(event);
-        }
-    }
-
     void RemoveCompletedEvents() {
         for (GameEvent event : completedEvents)
             events.remove(event);
@@ -78,13 +93,4 @@ public class GameEventManager {
             events.add(event);
         queuedEvents.clear();
     }
-
-    static GameEventManager singleton;
-
-    public static GameEventManager GlobalEventManager() {
-        if (singleton == null)
-            singleton = new GameEventManager();
-        return singleton;
-    }
-
 }

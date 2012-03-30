@@ -1,85 +1,11 @@
 package Math;
 
 public class Rect {
+// ------------------------------ FIELDS ------------------------------
+
     public float X, Y, Width, Height;
 
-    public Rect() {
-        this(0, 0, 0, 0);
-    }
-
-    public Rect(float x, float y, float width, float height) {
-        X = x;
-        Y = y;
-        Width = width;
-        Height = height;
-    }
-
-    public Rect(Rect other) {
-        X = other.X;
-        Y = other.Y;
-        Width = other.Width;
-        Height = other.Height;
-    }
-
-    public Vec2 Dimensions() {
-        return new Vec2(Width, Height);
-    }
-
-    public Vec2 Center() {
-        return new Vec2(Left() + Width / 2, Bottom() + Height / 2);
-    }
-
-    public float Left() {
-        return X;
-    }
-
-    public float Right() {
-        return X + Width;
-    }
-
-    public float Top() {
-        return Y + Height;
-    }
-
-    public float Bottom() {
-        return Y;
-    }
-
-    public boolean IsIntersecting(Rect other) {
-        return AreIntersecting(this, other);
-    }
-
-    public void Translate(Vec2 offset) {
-        X += offset.X;
-        Y += offset.Y;
-    }
-
-    public static boolean AreIntersecting(Rect rect1, Rect rect2) {
-        return ((rect1.Right() >= rect2.Left()) &&
-                (rect1.Left() <= rect2.Right()) &&
-                (rect1.Top() >= rect2.Bottom()) &&
-                (rect1.Bottom() <= rect2.Top()));
-    }
-
-    public void CenterAt(Vec2 center) {
-        X = center.X - Width / 2;
-        Y = center.Y - Height / 2;
-    }
-
-    public static Rect CenteredAt(Vec2 center, float width, float height) {
-        float hw = width / 2;
-        float hh = height / 2;
-        return new Rect(center.X - hw, center.Y - hh, width, height);
-    }
-
-    public Rect MinBoundsOf(float rot) {
-        return MinBoundsOf(this, rot);
-    }
-
-    public static Rect MinBoundsOf(Vec2 center, float width, float height, float rot) {
-        Rect rect = Rect.CenteredAt(center, width, height);
-        return MinBoundsOf(rect, rot);
-    }
+// -------------------------- STATIC METHODS --------------------------
 
     public static Rect MinBoundsOf(Rect rect, float rot) {
         Vec2 pivot = rect.Center();
@@ -95,6 +21,18 @@ public class Rect {
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }
 
+    public Vec2 Center() {
+        return new Vec2(Left() + Width / 2, Bottom() + Height / 2);
+    }
+
+    public float Left() {
+        return X;
+    }
+
+    public float Bottom() {
+        return Y;
+    }
+
     public Vec2[] Corners() {
         Vec2[] corners = new Vec2[4];
         corners[0] = new Vec2(Left(), Bottom());
@@ -102,5 +40,75 @@ public class Rect {
         corners[2] = new Vec2(Right(), Top());
         corners[3] = new Vec2(Left(), Top());
         return corners;
+    }
+
+    public float Right() {
+        return X + Width;
+    }
+
+    public float Top() {
+        return Y + Height;
+    }
+
+    public static Rect MinBoundsOf(Vec2 center, float width, float height, float rot) {
+        Rect rect = Rect.CenteredAt(center, width, height);
+        return MinBoundsOf(rect, rot);
+    }
+
+    public static Rect CenteredAt(Vec2 center, float width, float height) {
+        float hw = width / 2;
+        float hh = height / 2;
+        return new Rect(center.X - hw, center.Y - hh, width, height);
+    }
+
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    public Rect() {
+        this(0, 0, 0, 0);
+    }
+
+    public Rect(Rect other) {
+        X = other.X;
+        Y = other.Y;
+        Width = other.Width;
+        Height = other.Height;
+    }
+
+    public Rect(float x, float y, float width, float height) {
+        X = x;
+        Y = y;
+        Width = width;
+        Height = height;
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    public void CenterAt(Vec2 center) {
+        X = center.X - Width / 2;
+        Y = center.Y - Height / 2;
+    }
+
+    public Vec2 Dimensions() {
+        return new Vec2(Width, Height);
+    }
+
+    public boolean IsIntersecting(Rect other) {
+        return AreIntersecting(this, other);
+    }
+
+    public static boolean AreIntersecting(Rect rect1, Rect rect2) {
+        return ((rect1.Right() >= rect2.Left()) &&
+                (rect1.Left() <= rect2.Right()) &&
+                (rect1.Top() >= rect2.Bottom()) &&
+                (rect1.Bottom() <= rect2.Top()));
+    }
+
+    public Rect MinBoundsOf(float rot) {
+        return MinBoundsOf(this, rot);
+    }
+
+    public void Translate(Vec2 offset) {
+        X += offset.X;
+        Y += offset.Y;
     }
 }

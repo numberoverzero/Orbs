@@ -5,7 +5,11 @@ import Math.Rect;
 import Math.Vec2;
 
 public final class Collision {
+// ------------------------------ FIELDS ------------------------------
+
     final double eps = 1E-7;
+
+// -------------------------- OTHER METHODS --------------------------
 
     public CollisionResult Check(Iterable<GameObject> gObjIter1, Iterable<GameObject> gObjIter2) {
         for (GameObject gObj1 : gObjIter1) {

@@ -6,9 +6,13 @@ import Math.Random;
 import Math.Vec2;
 
 public class OrbitBehavior implements IBehavior {
+// ------------------------------ FIELDS ------------------------------
+
     static float defOrbitRadius = 60, defOrbitPeriod = 3, defCorrectionPct = 600;
     float orbitRadius, orbitPeriod, orbitElapsed, orbitSign, orbitMag, correctionPct;
     GameObject orbitObject;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public OrbitBehavior(GameObject orbitObject) {
         super();
@@ -20,6 +24,26 @@ public class OrbitBehavior implements IBehavior {
 
         orbitSign = Random.Sign();
         orbitMag = Random.Float(0.8f, 1);
+    }
+
+// ------------------------ INTERFACE METHODS ------------------------
+
+
+// --------------------- Interface IBehavior ---------------------
+
+
+    @Override
+    public void Apply(GameObject object) {
+        UpdateOrder(object);
+        Vec2 targetPos = CalculateTargetPos(object);
+        Vec2 direction = targetPos.Minus(object.Physics.Position);
+        object.Physics.ApplyForce(direction);
+        JitterOrbit(object);
+    }
+
+    @Override
+    public void Destroy() {
+        orbitObject = null;
     }
 
     @Override
@@ -36,18 +60,25 @@ public class OrbitBehavior implements IBehavior {
         orbitElapsed += orbitSign * orbitMag * dt;
     }
 
-    @Override
-    public void Apply(GameObject object) {
-        UpdateOrder(object);
-        Vec2 targetPos = CalculateTargetPos(object);
-        Vec2 direction = targetPos.Minus(object.Physics.Position);
-        object.Physics.ApplyForce(direction);
-        JitterOrbit(object);
+// -------------------------- OTHER METHODS --------------------------
+
+    private Vec2 CalculateTargetPos(GameObject object) {
+        Vec2 target = new Vec2(orbitObject.Physics.Position);
+        if (object.CurrentOrder == Order.Hover || object.CurrentOrder == Order.Seek) {
+            Vec2 orbitOffset = Vec2.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
+            orbitOffset.Mul(orbitRadius);
+            target.Add(orbitOffset);
+        }
+        return target;
     }
 
-    @Override
-    public void Destroy() {
-        orbitObject = null;
+    private void JitterOrbit(GameObject object) {
+        Vec2 objVel = object.Physics.Velocity;
+        float rpx = Random.Float(0, 0.35f),
+                rpy = Random.Float(0, 0.35f);
+        Vec2 jitterOffset = new Vec2(rpx, rpy);
+        jitterOffset.LinearMul(objVel);
+        objVel.Add(jitterOffset);
     }
 
     private void UpdateOrder(GameObject object) {
@@ -76,24 +107,5 @@ public class OrbitBehavior implements IBehavior {
                 }
             }
         }
-    }
-
-    private Vec2 CalculateTargetPos(GameObject object) {
-        Vec2 target = new Vec2(orbitObject.Physics.Position);
-        if (object.CurrentOrder == Order.Hover || object.CurrentOrder == Order.Seek) {
-            Vec2 orbitOffset = Vec2.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
-            orbitOffset.Mul(orbitRadius);
-            target.Add(orbitOffset);
-        }
-        return target;
-    }
-
-    private void JitterOrbit(GameObject object) {
-        Vec2 objVel = object.Physics.Velocity;
-        float rpx = Random.Float(0, 0.35f),
-                rpy = Random.Float(0, 0.35f);
-        Vec2 jitterOffset = new Vec2(rpx, rpy);
-        jitterOffset.LinearMul(objVel);
-        objVel.Add(jitterOffset);
     }
 }

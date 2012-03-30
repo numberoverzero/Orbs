@@ -4,11 +4,14 @@ import Math.Rect;
 import Math.Vec2;
 
 public class PhysicsComponent {
+// ------------------------------ FIELDS ------------------------------
 
     static final float DEFAULT_ACCEL_DECAY = 0.3f;
 
     public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
     public float Rotation, Mass, MaxSpeed;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public PhysicsComponent() {
         Position = Vec2.Zero();
@@ -32,6 +35,8 @@ public class PhysicsComponent {
         MaxSpeed = other.MaxSpeed;
     }
 
+// -------------------------- OTHER METHODS --------------------------
+
     public void ApplyForce(Vec2 force) {
         Vec2 accelOffset = force.DividedBy(Mass);
         Acceleration.Add(accelOffset);
@@ -39,6 +44,14 @@ public class PhysicsComponent {
 
     public void ApplyForce(Vec2 direction, float mag) {
         ApplyForce(direction.Times(mag));
+    }
+
+    public Rect GetAABB() {
+        return Rect.CenteredAt(Position, Dimensions.X, Dimensions.Y);
+    }
+
+    public Rect GetMinAABB() {
+        return GetAABB().MinBoundsOf(Rotation);
     }
 
     public void Update(float dt) {
@@ -58,13 +71,5 @@ public class PhysicsComponent {
             Velocity.Normalize();
             Velocity.Mul(MaxSpeed);
         }
-    }
-
-    public Rect GetAABB() {
-        return Rect.CenteredAt(Position, Dimensions.X, Dimensions.Y);
-    }
-
-    public Rect GetMinAABB() {
-        return GetAABB().MinBoundsOf(Rotation);
     }
 }

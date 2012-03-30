@@ -3,14 +3,14 @@ package GameEvents;
 import GameObjects.GameObject;
 
 public class GameEvent {
+// ------------------------------ FIELDS ------------------------------
+
     public GameObject src, dst;
     public GameEventArgs args;
     float timeToSend;
     boolean hasFired;
 
-    public boolean HasFired() {
-        return hasFired;
-    }
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public GameEvent(GameObject src, GameObject dst, GameEventArgs args, float timeToSend) {
         this.src = src;
@@ -18,6 +18,12 @@ public class GameEvent {
         this.args = args;
         this.timeToSend = timeToSend;
         hasFired = timeToSend < 0 ? true : false;
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    public boolean HasFired() {
+        return hasFired;
     }
 
     public void Update(float dt) {

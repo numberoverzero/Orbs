@@ -11,7 +11,9 @@ import Rendering.ColorScheme;
 import java.util.ArrayList;
 
 public class GameObject {
-    boolean dirty;
+// ------------------------------ FIELDS ------------------------------
+
+    public static GameEventManager EventManager;
     public boolean Active;
     public int Health;
     public float Timescale;
@@ -20,30 +22,16 @@ public class GameObject {
     public PhysicsComponent Physics;
     public ColorScheme Colors;
     public Order CurrentOrder;
-    public GameEventManager EventManager;
+    boolean dirty;
 
-    public GameObject(GameEventManager eventManager) {
-        this(0, eventManager);
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    public GameObject() {
+        this(0);
     }
 
-    public GameObject(int health, GameEventManager eventManager) {
-        this(health, health > 0, true, eventManager);
-    }
-
-    public GameObject(int health, boolean active, boolean fireOnCreateEvent, GameEventManager eventManager) {
-        Health = health;
-        Active = active;
-        Physics = new PhysicsComponent();
-        Behaviors = new ArrayList<IBehavior>();
-        Colors = new ColorScheme();
-        CurrentOrder = Order.None;
-        if (eventManager == null)
-            EventManager = GameEventManager.GlobalEventManager();
-        else
-            EventManager = eventManager;
-
-        if (fireOnCreateEvent)
-            EventManager.AddEvent(new GameObjectCreatedEvent(this));
+    public GameObject(int health) {
+        this(health, health > 0, true);
     }
 
     public GameObject(GameObject other) {
@@ -55,14 +43,26 @@ public class GameObject {
         Physics = new PhysicsComponent(other.Physics);
         Colors = other.Colors;
         CurrentOrder = other.CurrentOrder;
-        EventManager = other.EventManager;
     }
+
+    public GameObject(int health, boolean active, boolean fireOnCreateEvent) {
+        Health = health;
+        Active = active;
+        Physics = new PhysicsComponent();
+        Behaviors = new ArrayList<IBehavior>();
+        Colors = new ColorScheme();
+        CurrentOrder = Order.None;
+        EventManager.AddEvent(new GameObjectCreatedEvent(this));
+    }
+
+// -------------------------- OTHER METHODS --------------------------
 
     public boolean HasOrder() {
         return !(CurrentOrder == Order.None || CurrentOrder == Order.Any);
     }
 
-    public void OnGameEvent(GameObject src, GameEventArgs args) { }
+    public void OnGameEvent(GameObject src, GameEventArgs args) {
+    }
 
     public void Update(float dt) {
         UpdateBehaviors(dt);

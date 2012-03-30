@@ -8,8 +8,16 @@ import GameObjects.GameObject;
  * Time: 8:46 AM
  */
 public class CollisionResult {
+// ------------------------------ FIELDS ------------------------------
+
     public boolean Collided;
     public GameObject collider1, collider2;
+
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    public CollisionResult() {
+        Collided = false;
+    }
 
     public CollisionResult(GameObject collider1, GameObject collider2) {
         Collided = true;
@@ -17,9 +25,7 @@ public class CollisionResult {
         this.collider2 = collider2;
     }
 
-    public CollisionResult() {
-        Collided = false;
-    }
+// -------------------------- OTHER METHODS --------------------------
 
     public GameObject GetOther(GameObject gObject) {
         if (!Collided)

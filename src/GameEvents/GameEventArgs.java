@@ -6,7 +6,11 @@ package GameEvents;
  * Time: 5:35 PM
  */
 public class GameEventArgs {
+// ------------------------------ FIELDS ------------------------------
+
     String msg;
+
+// --------------------------- CONSTRUCTORS ---------------------------
 
     public GameEventArgs() {
         msg = "";
@@ -15,5 +19,4 @@ public class GameEventArgs {
     public GameEventArgs(String msg) {
         this.msg = msg;
     }
-
 }
