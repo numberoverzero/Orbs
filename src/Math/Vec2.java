@@ -53,9 +53,8 @@ public class Vec2 {
         Y *= c;
     }
 
-    public void Div(float c) {
-        X /= c;
-        Y /= c;
+    public Vec2 DividedBy(float c) {
+        return new Vec2(X / c, Y / c);
     }
 
     public float Angle() {
@@ -70,10 +69,22 @@ public class Vec2 {
         return X * X + Y * Y;
     }
 
+    public Vec2 Times(float c) {
+        return new Vec2(X * c, Y * c);
+    }
+
     public void Normalize() {
         float m = Mag();
         X /= m;
         Y /= m;
+    }
+
+    public Vec2 Minus(Vec2 other) {
+        return new Vec2(X - other.X, Y - other.Y);
+    }
+
+    public static Vec2 FromAngle(double theta) {
+        return new Vec2(Math.cos(theta), Math.sin(theta));
     }
 
     public static void Rotate(Vec2 vec, float theta) {
@@ -107,6 +118,11 @@ public class Vec2 {
         point.Y = (float) y;
     }
 
+    public void LinearMul(Vec2 other) {
+        X *= other.X;
+        Y *= other.Y;
+    }
+
     public void Translate(Vec2 offset) {
         X += offset.X;
         Y += offset.Y;
@@ -115,6 +131,10 @@ public class Vec2 {
     public Vec2 Unit() {
         float m = Mag();
         return new Vec2(X / m, Y / m);
+    }
+
+    public static float Distance2(Vec2 vec1, Vec2 vec2) {
+        return (vec2.X - vec1.X) * (vec2.X - vec1.X) + (vec2.Y - vec1.Y) * (vec2.Y - vec1.Y);
     }
 
     public Vec2 Negative() {

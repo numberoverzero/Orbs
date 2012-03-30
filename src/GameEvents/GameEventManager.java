@@ -22,7 +22,7 @@ public class GameEventManager {
     }
 
     public void AddEvent(GameEvent event) {
-        ArrayList eventList = isUpdating ? queuedEvents : events;
+        ArrayList<GameEvent> eventList = isUpdating ? queuedEvents : events;
         eventList.add(event);
         CheckWatchers(event, EventWatchTiming.OnCreate);
     }

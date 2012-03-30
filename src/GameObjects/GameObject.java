@@ -4,6 +4,7 @@ import GameEvents.GameEventArgs;
 import GameEvents.GameEventManager;
 import GameEvents.GameObjectEvents.GameObjectCreatedEvent;
 import GameObjects.Behaviors.IBehavior;
+import GameObjects.Orders.Order;
 import Physics.PhysicsComponent;
 import Rendering.ColorScheme;
 
@@ -18,6 +19,7 @@ public class GameObject {
     public ArrayList<IBehavior> Behaviors;
     public PhysicsComponent Physics;
     public ColorScheme Colors;
+    public Order CurrentOrder;
     public GameEventManager EventManager;
 
     public GameObject(GameEventManager eventManager) {
@@ -34,6 +36,7 @@ public class GameObject {
         Physics = new PhysicsComponent();
         Behaviors = new ArrayList<IBehavior>();
         Colors = new ColorScheme();
+        CurrentOrder = Order.None;
         if (eventManager == null)
             EventManager = GameEventManager.GlobalEventManager();
         else
@@ -51,12 +54,15 @@ public class GameObject {
         Behaviors = new ArrayList<IBehavior>(other.Behaviors);
         Physics = new PhysicsComponent(other.Physics);
         Colors = other.Colors;
+        CurrentOrder = other.CurrentOrder;
         EventManager = other.EventManager;
     }
 
-    public void OnGameEvent(GameObject src, GameEventArgs args) {
-
+    public boolean HasOrder() {
+        return !(CurrentOrder == Order.None || CurrentOrder == Order.Any);
     }
+
+    public void OnGameEvent(GameObject src, GameEventArgs args) { }
 
     public void Update(float dt) {
         UpdateBehaviors(dt);
