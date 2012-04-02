@@ -26,6 +26,13 @@ public class OrbitBehavior implements IBehavior {
         orbitMag = Random.Float(0.8f, 1);
     }
 
+    public OrbitBehavior(GameObject orbitObject, float orbitRadius, float orbitPeriod)
+    {
+        this(orbitObject);
+        this.orbitRadius = orbitRadius;
+        this.orbitPeriod = orbitPeriod;
+    }
+
 // ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -81,6 +88,9 @@ public class OrbitBehavior implements IBehavior {
     }
 
     private void UpdateOrder(GameObject object) {
+
+        // Do some magic here to adjust max speed, and set acceleration to the center of the orbit.
+
         Vec2 tarPos = orbitObject.Physics.Position;
         Vec2 objPos = object.Physics.Position;
         float distance2 = Vec2.Distance2(tarPos, objPos);

@@ -39,7 +39,8 @@ public class Orb extends GameObject {
             //Highlight layer - Thin Border
             color = Colors.GetColor(Hostility, RenderLayer.Highlight);
             float lineWidth = BORDER_PCT * Size;
-            Rendering.Shapes.Rectangle.DrawOutline(batch, Physics.Position, dimensions, Physics.Rotation, color, lineWidth);
+            Rendering.Shapes.Rectangle.DrawOutline(batch, Physics.Position, dimensions,
+                    Physics.Rotation, color, lineWidth);
         }
     }
 }

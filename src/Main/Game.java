@@ -62,9 +62,6 @@ public class Game implements ApplicationListener {
             create();
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        //Rectangle.Draw(batch, new Vec2(centerX, centerY), new Vec2(width, height), 0, new Color(1, 0, 0, 1));
-        //Rectangle.DrawOutline(batch, new Vec2(centerX, centerY), new Vec2(width / 2, height / 2), Math.PI / 2, new Color(0, 1, 1, 1), 2);
-        //Rectangle.Draw(batch, new Vec2(centerX, centerY), Vec2.One(), new Color(1, 1, 0, 1));
         orb.Draw(batch, RenderPass.Effects);
         batch.end();
         orb.Physics.Rotation += dt * 2 * Math.PI / 5;
