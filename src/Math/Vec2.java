@@ -73,7 +73,7 @@ public class Vec2 {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public void Add(float c) {
+    public void Add(double c) {
         X += c;
         Y += c;
     }

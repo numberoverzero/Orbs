@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class GameObjectIterable<TGameObj extends GameObject> implements Iterable<TGameObj> {
 // ------------------------------ FIELDS ------------------------------
 
-    protected ArrayList<TGameObj> objects;
+    protected ArrayList<TGameObj> objects = new ArrayList<TGameObj>();
 
 // ------------------------ INTERFACE METHODS ------------------------
 

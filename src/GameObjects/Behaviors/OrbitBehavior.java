@@ -26,8 +26,7 @@ public class OrbitBehavior implements IBehavior {
         orbitMag = Random.Float(0.8f, 1);
     }
 
-    public OrbitBehavior(GameObject orbitObject, float orbitRadius, float orbitPeriod)
-    {
+    public OrbitBehavior(GameObject orbitObject, float orbitRadius, float orbitPeriod) {
         this(orbitObject);
         this.orbitRadius = orbitRadius;
         this.orbitPeriod = orbitPeriod;
@@ -41,9 +40,11 @@ public class OrbitBehavior implements IBehavior {
     @Override
     public void Apply(GameObject object) {
         UpdateOrder(object);
+
+        object.Physics.MaxSpeed = (float) (2 * Math.PI * orbitRadius / orbitPeriod);
         Vec2 targetPos = CalculateTargetPos(object);
         Vec2 direction = targetPos.Minus(object.Physics.Position);
-        object.Physics.ApplyForce(direction);
+        object.Physics.Velocity.Add(direction);
         JitterOrbit(object);
     }
 
@@ -80,15 +81,14 @@ public class OrbitBehavior implements IBehavior {
 
     private void JitterOrbit(GameObject object) {
         Vec2 objVel = object.Physics.Velocity;
-        float rpx = Random.Float(0, 0.35f),
-                rpy = Random.Float(0, 0.35f);
+        float rpx = Random.Float(0, 0.07f),
+                rpy = Random.Float(0, 0.07f);
         Vec2 jitterOffset = new Vec2(rpx, rpy);
         jitterOffset.LinearMul(objVel);
         objVel.Add(jitterOffset);
     }
 
     private void UpdateOrder(GameObject object) {
-
         // Do some magic here to adjust max speed, and set acceleration to the center of the orbit.
 
         Vec2 tarPos = orbitObject.Physics.Position;

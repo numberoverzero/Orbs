@@ -6,7 +6,7 @@ import Math.Vec2;
 public class PhysicsComponent {
 // ------------------------------ FIELDS ------------------------------
 
-    static final float DEFAULT_ACCEL_DECAY = 0.3f;
+    static final float DEFAULT_ACCEL_DECAY = 0.0f;
 
     public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
     public float Mass, MaxSpeed;

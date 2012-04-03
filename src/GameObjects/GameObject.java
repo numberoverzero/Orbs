@@ -59,6 +59,10 @@ public class GameObject {
 
 // -------------------------- OTHER METHODS --------------------------
 
+    public void AddBehavior(IBehavior behavior) {
+        Behaviors.add(behavior);
+    }
+
     public void Draw(SpriteBatch batch, RenderPass pass) {
     }
 
@@ -69,8 +73,13 @@ public class GameObject {
     public void OnGameEvent(GameObject src, GameEventArgs args) {
     }
 
+    public void RemoveBehavior(IBehavior behavior) {
+        Behaviors.remove(behavior);
+    }
+
     public void Update(float dt) {
         UpdateBehaviors(dt);
+        Physics.Update(dt);
     }
 
     void UpdateBehaviors(float dt) {
