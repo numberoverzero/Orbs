@@ -24,7 +24,7 @@ public class Game implements ApplicationListener {
     static Texture texture;
     static int width = 100, height = 50;
     GameObjectIterable<Orb> orbs = new GameObjectIterable<Orb>();
-    int nOrbs = 800;
+    int nOrbs = 10;
 
     int centerX, centerY;
 

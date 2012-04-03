@@ -2,14 +2,16 @@ package GameObjects.Behaviors;
 
 import GameObjects.GameObject;
 import GameObjects.Orders.Order;
+import Math.Util;
 import Math.Random;
 import Math.Vec2;
 
 public class OrbitBehavior implements IBehavior {
 // ------------------------------ FIELDS ------------------------------
 
-    static float defOrbitRadius = 60, defOrbitPeriod = 3, defCorrectionPct = 600;
-    float orbitRadius, orbitPeriod, orbitElapsed, orbitSign, orbitMag, correctionPct;
+    static float defOrbitRadius = 60, defOrbitPeriod = 3, defCorrectionPct = 600, defJitterPct = 0.35f;
+    float orbitRadius, orbitPeriod, orbitElapsed, orbitSign, orbitMag,
+            correctionPct, jitterPct;
     GameObject orbitObject;
 
 // --------------------------- CONSTRUCTORS ---------------------------
@@ -21,7 +23,7 @@ public class OrbitBehavior implements IBehavior {
         orbitPeriod = defOrbitPeriod;
         orbitElapsed = 0;
         correctionPct = defCorrectionPct;
-
+        jitterPct = defJitterPct;
         orbitSign = Random.Sign();
         orbitMag = Random.Float(0.8f, 1);
     }
@@ -69,6 +71,16 @@ public class OrbitBehavior implements IBehavior {
 
 // -------------------------- OTHER METHODS --------------------------
 
+    public void ForceOrbitSign(float sign)
+    {
+        orbitSign = sign > 0 ? 1 : -1;
+    }
+
+    public void SetJitterUpperLimit(float jitterUpperPct)
+    {
+        jitterPct = Util.Clamp(jitterUpperPct, 0, 1);
+    }
+
     private Vec2 CalculateTargetPos(GameObject object) {
         Vec2 target = new Vec2(orbitObject.Physics.Position);
         if (object.CurrentOrder == Order.Hover || object.CurrentOrder == Order.Seek) {
@@ -81,8 +93,8 @@ public class OrbitBehavior implements IBehavior {
 
     private void JitterOrbit(GameObject object) {
         Vec2 objVel = object.Physics.Velocity;
-        float rpx = Random.Float(0, 0.07f),
-                rpy = Random.Float(0, 0.07f);
+        float rpx = Random.Float(0, jitterPct),
+                rpy = Random.Float(0, jitterPct);
         Vec2 jitterOffset = new Vec2(rpx, rpy);
         jitterOffset.LinearMul(objVel);
         objVel.Add(jitterOffset);
