@@ -4,6 +4,13 @@
       <w>aabb</w>
       <w>collider</w>
       <w>iter</w>
+      <w>iterable</w>
+      <w>lerp</w>
+      <w>rotx</w>
+      <w>roty</w>
+      <w>tempx</w>
+      <w>tempy</w>
+      <w>xypairs</w>
     </words>
   </dictionary>
 </component>
