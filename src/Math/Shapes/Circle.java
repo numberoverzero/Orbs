@@ -1,6 +1,7 @@
 package Math.Shapes;
 
 import Math.Vec2;
+
 /**
  * User: Joe Laptop
  * Date: 4/5/12
@@ -14,23 +15,19 @@ public class Circle {
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public Circle()
-    {
+    public Circle() {
         this(0);
     }
 
-    public Circle(float radius)
-    {
+    public Circle(float radius) {
         this(radius, 0, 0);
     }
 
-    public Circle(float radius, Vec2 center)
-    {
+    public Circle(float radius, Vec2 center) {
         this(radius, center.X, center.Y);
     }
 
-    public Circle(float radius, float centerX, float centerY)
-    {
+    public Circle(float radius, float centerX, float centerY) {
         CenterX = centerX;
         CenterY = centerY;
         Radius = radius;
@@ -38,8 +35,17 @@ public class Circle {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public Vec2 GetCenter()
-    {
+    public void CenterAt(Vec2 center) {
+        CenterX = center.X;
+        CenterY = center.Y;
+    }
+
+    public Vec2 GetCenter() {
         return new Vec2(CenterX, CenterY);
+    }
+
+    public void Translate(Vec2 offset) {
+        CenterX += offset.X;
+        CenterY += offset.Y;
     }
 }

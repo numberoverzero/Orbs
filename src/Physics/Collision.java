@@ -1,8 +1,9 @@
 package Physics;
 
 import GameObjects.GameObject;
-import Math.Shapes.Rect;
+import Math.Shapes.Circle;
 import Math.Shapes.Intersection;
+import Math.Shapes.Rect;
 import Math.Vec2;
 
 public final class Collision {
@@ -31,34 +32,70 @@ public final class Collision {
     }
 
     public boolean Check(GameObject object1, GameObject object2) {
-        if (Math.abs(object1.Physics.Rotation) < eps && Math.abs(object2.Physics.Rotation) < eps)
-            return IntersectAAObjects(object1, object2);
-        else
-            return IntersectRotatedObjects(object1, object2);
-    }
+        PhysicsComponent physics1 = object1.Physics;
+        PhysicsComponent physics2 = object2.Physics;
+        boolean mayNeedRotatedCheck = Math.abs(object1.Physics.Rotation) < eps &&
+                Math.abs(object2.Physics.Rotation) < eps;
+        boolean hasNonTrivialRotation = physics1.ColliderType != ColliderType.Circle ||
+                physics2.ColliderType != ColliderType.Circle;
 
-    boolean IntersectAAObjects(GameObject object1, GameObject object2) {
-        return Intersection.Check(object1.Physics.GetAABB(), object2.Physics.GetAABB());
+        if (mayNeedRotatedCheck && hasNonTrivialRotation)
+            return IntersectRotatedObjects(physics1, physics2);
+        else
+            return IntersectAlignedObjects(physics1, physics2);
     }
 
     // If the objects don't intersect in object1's ref, or they don't intersect in object2's ref,
     // then they can't intersect
-    boolean IntersectRotatedObjects(GameObject object1, GameObject object2) {
-        return !(DoesNotIntersectInRefFrame(object1, object2) || DoesNotIntersectInRefFrame(object2, object1));
+    boolean IntersectRotatedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
+        ColliderType type1 = physics1.ColliderType;
+        ColliderType type2 = physics2.ColliderType;
+
+        if (type1 == ColliderType.Circle && type2 == ColliderType.Rectangle)
+            return IntersectCircleRect(physics1, physics2);
+
+        else if (type1 == ColliderType.Rectangle && type2 == ColliderType.Circle)
+            return IntersectCircleRect(physics2, physics1);
+
+        else if (type1 == ColliderType.Rectangle && type2 == ColliderType.Rectangle)
+            return !(DoesNotIntersectInRefFrame(physics1, physics2) ||
+                    DoesNotIntersectInRefFrame(physics2, physics1));
+        else
+            return false;
     }
 
-    // Returns TRUE if the objects do no intersect in refObject's 0 rotation origin-centered perspective
-    boolean DoesNotIntersectInRefFrame(GameObject refObject, GameObject relObject) {
-        double refRotation = refObject.Physics.Rotation;
-        double relRotation = relObject.Physics.Rotation;
+    boolean IntersectCircleRect(PhysicsComponent physicsCircle, PhysicsComponent physicsRect) {
+        double theta = physicsRect.Rotation;
+        Circle circle = physicsCircle.GetBoundingCircle();
+        Rect rect = physicsRect.GetOBB();
+        Vec2 offset = rect.Center();
+        offset.Negate();
 
-        Rect refRect = refObject.Physics.GetAABB();
-        Rect relRect = relObject.Physics.GetAABB();
+        // Move to the origin, center the rectangle there
+        circle.Translate(offset);
+        rect.Translate(offset);
+
+        // Move to the unrotated coordinate system wrt the Rect (this is already done for the Rect, as OBB has 0 rot)
+        Vec2 circleCenter = circle.GetCenter();
+        Vec2.Rotate(circleCenter, -theta);
+        circle.CenterAt(circleCenter);
+
+        // Now it's an unrotated rect vs circle check
+        return Intersection.Check(rect, circle);
+    }
+
+    // Returns TRUE if the objects do no intersect in refPhysics's 0 rotation origin-centered perspective
+    boolean DoesNotIntersectInRefFrame(PhysicsComponent refPhysics, PhysicsComponent relPhysics) {
+        double refRotation = refPhysics.Rotation;
+        double relRotation = relPhysics.Rotation;
+
+        Rect refRect = refPhysics.GetOBB();
+        Rect relRect = relPhysics.GetOBB();
 
         Vec2 refCenter = refRect.Center();
         Vec2 relCenter = relRect.Center();
 
-        // Translate relCenter by refCenter
+        // Translate relCenter by -refCenter
         relCenter.Translate(refCenter.NegOut());
 
         // RotateOut our relCenter by negative ref rotation, so that we have effectively
@@ -74,5 +111,24 @@ public final class Collision {
         // with our refComponent's AABB centered at the origin
         refRect.CenterAt(Vec2.Zero());
         return !Intersection.Check(minRelAABB, refRect);
+    }
+
+    boolean IntersectAlignedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
+        ColliderType type1 = physics1.ColliderType;
+        ColliderType type2 = physics2.ColliderType;
+        if (type1 == ColliderType.Circle && type2 == ColliderType.Circle)
+            return Intersection.Check(physics1.GetBoundingCircle(), physics2.GetBoundingCircle());
+
+        else if (type1 == ColliderType.Circle && type2 == ColliderType.Rectangle)
+            return Intersection.Check(physics1.GetBoundingCircle(), physics2.GetOBB());
+
+        else if (type1 == ColliderType.Rectangle && type2 == ColliderType.Circle)
+            return Intersection.Check(physics1.GetOBB(), physics2.GetBoundingCircle());
+
+        else if (type1 == ColliderType.Rectangle && type2 == ColliderType.Rectangle)
+            return Intersection.Check(physics1.GetOBB(), physics2.GetOBB());
+
+        else
+            return false;
     }
 }

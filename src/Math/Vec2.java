@@ -62,8 +62,8 @@ public class Vec2 {
     }
 
     public Vec2(double X, double Y) {
-        this.X = (float)X;
-        this.Y = (float)Y;
+        this.X = (float) X;
+        this.Y = (float) Y;
     }
 
 // -------------------------- OTHER METHODS --------------------------
@@ -77,15 +77,13 @@ public class Vec2 {
         X += other.X;
         Y += other.Y;
     }
-    
-    public Vec2 AddOut(double c)
-    {
-        return new Vec2(X+c, Y+c);
+
+    public Vec2 AddOut(double c) {
+        return new Vec2(X + c, Y + c);
     }
 
-    public Vec2 AddOut(Vec2 other)
-    {
-        return new Vec2(X+other.X, Y+other.Y);
+    public Vec2 AddOut(Vec2 other) {
+        return new Vec2(X + other.X, Y + other.Y);
     }
 
     public float Angle() {
@@ -112,6 +110,11 @@ public class Vec2 {
 
     public Vec2 NegOut() {
         return new Vec2(-X, -Y);
+    }
+
+    public void Negate() {
+        X *= -1;
+        Y *= -1;
     }
 
     public void Normalize() {

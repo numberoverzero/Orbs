@@ -1,5 +1,6 @@
 package Physics;
 
+import Math.Shapes.Circle;
 import Math.Shapes.Rect;
 import Math.Vec2;
 
@@ -51,11 +52,23 @@ public class PhysicsComponent {
     }
 
     public Rect GetAABB() {
+        return GetOBB().MinBoundsOf(Rotation);
+    }
+
+    public Circle GetBoundingCircle() {
+        return new Circle(GetRadius(), Position);
+    }
+
+    public float GetRadius() {
+        return Dimensions.X;
+    }
+
+    public Rect GetOBB() {
         return Rect.CenteredAt(Position, Dimensions.X, Dimensions.Y);
     }
 
-    public Rect GetMinAABB() {
-        return GetAABB().MinBoundsOf(Rotation);
+    public void SetRadius(float radius) {
+        Dimensions.X = radius;
     }
 
     public void Update(float dt) {

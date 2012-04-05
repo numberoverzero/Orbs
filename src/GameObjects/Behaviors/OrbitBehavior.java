@@ -2,8 +2,8 @@ package GameObjects.Behaviors;
 
 import GameObjects.GameObject;
 import GameObjects.Orders.Order;
-import Math.Util;
 import Math.Random;
+import Math.Util;
 import Math.Vec2;
 
 public class OrbitBehavior implements IBehavior {
@@ -81,8 +81,7 @@ public class OrbitBehavior implements IBehavior {
         return target;
     }
 
-    public void ForceOrbitSign(float sign)
-    {
+    public void ForceOrbitSign(float sign) {
         orbitSign = sign > 0 ? 1 : -1;
     }
 
@@ -95,34 +94,33 @@ public class OrbitBehavior implements IBehavior {
         objVel.Add(jitterOffset);
     }
 
-    public void SetJitterUpperLimit(float jitterUpperPct)
-    {
+    public void SetJitterUpperLimit(float jitterUpperPct) {
         jitterPct = Util.Clamp(jitterUpperPct, 0, 1);
     }
 
     private void UpdateOrder(GameObject object) {
         // Do some magic here to adjust max speed, and set acceleration to the center of the orbit.
 
-                            Vec2 tarPos = orbitObject.Physics.Position;
-                    Vec2 objPos = object.Physics.Position;
-                    float distance2 = Vec2.Distance2(tarPos, objPos);
+        Vec2 tarPos = orbitObject.Physics.Position;
+        Vec2 objPos = object.Physics.Position;
+        float distance2 = Vec2.Distance2(tarPos, objPos);
 
-                    Vec2 objDims = object.Physics.Dimensions;
-                    float objDim = objDims.X > objDims.Y ? objDims.X : objDims.Y;
+        Vec2 objDims = object.Physics.Dimensions;
+        float objDim = objDims.X > objDims.Y ? objDims.X : objDims.Y;
 
-                    if (!object.HasOrder() || object.CurrentOrder == Order.Hover) {
-                        float hoverDist = orbitRadius + objDim * (2 + correctionPct / 100);
-                        if (distance2 > hoverDist * hoverDist)
-                            object.CurrentOrder = Order.Seek;
-                    } else if (!object.HasOrder() || object.CurrentOrder == Order.Seek) {
-                        float seekDist = orbitRadius + 2 * objDim;
-                        if (distance2 <= seekDist * seekDist) {
-                            object.CurrentOrder = Order.Hover;
-                            Vec2 direction = tarPos.SubOut(objPos);
-                            if (direction.Mag2() > 0) {
-                                direction.Normalize();
-                                float rTheta = (float) (Random.Float() * 2 * Math.PI);
-                                direction = direction.RotateOut(rTheta);
+        if (!object.HasOrder() || object.CurrentOrder == Order.Hover) {
+            float hoverDist = orbitRadius + objDim * (2 + correctionPct / 100);
+            if (distance2 > hoverDist * hoverDist)
+                object.CurrentOrder = Order.Seek;
+        } else if (!object.HasOrder() || object.CurrentOrder == Order.Seek) {
+            float seekDist = orbitRadius + 2 * objDim;
+            if (distance2 <= seekDist * seekDist) {
+                object.CurrentOrder = Order.Hover;
+                Vec2 direction = tarPos.SubOut(objPos);
+                if (direction.Mag2() > 0) {
+                    direction.Normalize();
+                    float rTheta = (float) (Random.Float() * 2 * Math.PI);
+                    direction = direction.RotateOut(rTheta);
                     orbitElapsed = (float) (Math.asin(direction.Y) * orbitPeriod / (2 * Math.PI));
                     orbitSign = Random.Sign();
                 }
