@@ -39,12 +39,12 @@ public class PhysicsComponent {
 // -------------------------- OTHER METHODS --------------------------
 
     public void ApplyForce(Vec2 force) {
-        Vec2 accelOffset = force.DividedBy(Mass);
+        Vec2 accelOffset = force.DivOut(Mass);
         Acceleration.Add(accelOffset);
     }
 
     public void ApplyForce(Vec2 direction, float mag) {
-        ApplyForce(direction.Times(mag));
+        ApplyForce(direction.MulOut(mag));
     }
 
     public Rect GetAABB() {

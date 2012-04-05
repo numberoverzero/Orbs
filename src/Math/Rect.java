@@ -12,7 +12,7 @@ public class Rect {
         Vec2[] corners = rect.Corners();
         float minX = pivot.X, maxX = pivot.X, minY = pivot.Y, maxY = pivot.Y;
         for (Vec2 corner : corners) {
-            Vec2.RotateAbout(corner, pivot, rot);
+            Vec2.Rotate(corner, pivot, rot);
             minX = minX < corner.X ? minX : corner.X;
             maxX = maxX > corner.X ? maxX : corner.X;
             minY = minY < corner.Y ? minY : corner.Y;

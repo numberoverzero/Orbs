@@ -14,7 +14,7 @@ public final class Random {
     public static Vec2 Vec2(float mag) {
         float rx = Float(-1, 1),
                 ry = Float(-1, 1);
-        return new Vec2(rx, ry).Unit().Times(mag);
+        return new Vec2(rx, ry).Unit().MulOut(mag);
     }
 
     public static float Float(float min, float max) {

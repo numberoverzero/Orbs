@@ -58,9 +58,9 @@ public final class Collision {
         Vec2 relCenter = relRect.Center();
 
         // Translate relCenter by refCenter
-        relCenter.Translate(refCenter.Negative());
+        relCenter.Translate(refCenter.NegOut());
 
-        // Rotate our relCenter by negative ref rotation, so that we have effectively
+        // RotateOut our relCenter by negative ref rotation, so that we have effectively
         // put our ref into a coordinate system (as seen by rel) centered at the origin w/o rotation
         Vec2.Rotate(relCenter, -refRotation);
 

@@ -19,10 +19,14 @@ public class Vec2 {
     }
 
     public static void Rotate(Vec2 vec, double theta) {
-        RotateAbout(vec, Vec2.Zero(), theta);
+        Rotate(vec, Vec2.Zero(), theta);
     }
 
-    public static void RotateAbout(Vec2 point, Vec2 pivot, double theta) {
+    public static Vec2 Zero() {
+        return new Vec2(0);
+    }
+
+    public static void Rotate(Vec2 point, Vec2 pivot, double theta) {
         double dx = point.X - pivot.X;
         double dy = point.Y - pivot.Y;
         double st = Math.sin(theta);
@@ -32,10 +36,6 @@ public class Vec2 {
         double y = pivot.Y + (st * dx) + (ct * dy);
         point.X = (float) x;
         point.Y = (float) y;
-    }
-
-    public static Vec2 Zero() {
-        return new Vec2(0);
     }
 
     public static float Distance2(Vec2 vec1, Vec2 vec2) {
@@ -52,8 +52,8 @@ public class Vec2 {
         this(0);
     }
 
-    public Vec2(float s) {
-        this(s, s);
+    public Vec2(double scalar) {
+        this(scalar, scalar);
     }
 
     public Vec2(Vec2 other) {
@@ -61,14 +61,9 @@ public class Vec2 {
         Y = other.Y;
     }
 
-    public Vec2(float X, float Y) {
-        this.X = X;
-        this.Y = Y;
-    }
-
     public Vec2(double X, double Y) {
-        this.X = (float) X;
-        this.Y = (float) Y;
+        this.X = (float)X;
+        this.Y = (float)Y;
     }
 
 // -------------------------- OTHER METHODS --------------------------
@@ -82,12 +77,22 @@ public class Vec2 {
         X += other.X;
         Y += other.Y;
     }
+    
+    public Vec2 AddOut(double c)
+    {
+        return new Vec2(X+c, Y+c);
+    }
+
+    public Vec2 AddOut(Vec2 other)
+    {
+        return new Vec2(X+other.X, Y+other.Y);
+    }
 
     public float Angle() {
         return (float) Math.atan2(Y, X);
     }
 
-    public Vec2 DividedBy(float c) {
+    public Vec2 DivOut(float c) {
         return new Vec2(X / c, Y / c);
     }
 
@@ -96,16 +101,16 @@ public class Vec2 {
         Y *= other.Y;
     }
 
-    public Vec2 Minus(Vec2 other) {
-        return new Vec2(X - other.X, Y - other.Y);
-    }
-
     public void Mul(float c) {
         X *= c;
         Y *= c;
     }
 
-    public Vec2 Negative() {
+    public Vec2 MulOut(float c) {
+        return new Vec2(X * c, Y * c);
+    }
+
+    public Vec2 NegOut() {
         return new Vec2(-X, -Y);
     }
 
@@ -123,11 +128,11 @@ public class Vec2 {
         return X * X + Y * Y;
     }
 
-    public Vec2 Rotate(double theta) {
-        return RotateAbout(Vec2.Zero(), theta);
+    public Vec2 RotateOut(double theta) {
+        return RotateOut(Vec2.Zero(), theta);
     }
 
-    public Vec2 RotateAbout(Vec2 pivot, double theta) {
+    public Vec2 RotateOut(Vec2 pivot, double theta) {
         double dx = X - pivot.X;
         double dy = Y - pivot.Y;
         double st = Math.sin(theta);
@@ -143,8 +148,8 @@ public class Vec2 {
         Y -= other.Y;
     }
 
-    public Vec2 Times(float c) {
-        return new Vec2(X * c, Y * c);
+    public Vec2 SubOut(Vec2 other) {
+        return new Vec2(X - other.X, Y - other.Y);
     }
 
     public void Translate(Vec2 offset) {
