@@ -29,6 +29,11 @@ public final class Util {
         return (float) Math.sqrt(dx * dx + dy * dy);
     }
 
+    public static float DistanceSquared(double dx, double dy)
+    {
+        return (float)(dx*dx+dy*dy);
+    }
+
     public static double[] GetRectCorners(Vec2 dimensions, float borderWidth) {
         // Centered at the origin, returns corners A, B, C, D, E
         /*

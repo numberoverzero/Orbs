@@ -1,6 +1,6 @@
 package Physics;
 
-import Math.Rect;
+import Math.Shapes.Rect;
 import Math.Vec2;
 
 public class PhysicsComponent {
@@ -11,6 +11,7 @@ public class PhysicsComponent {
     public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
     public float Mass, MaxSpeed;
     public double Rotation;
+    public ColliderType ColliderType;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -23,6 +24,7 @@ public class PhysicsComponent {
         Rotation = 0;
         Mass = 1;
         MaxSpeed = Float.MAX_VALUE;
+        ColliderType = ColliderType.Rectangle;
     }
 
     public PhysicsComponent(PhysicsComponent other) {
@@ -34,6 +36,7 @@ public class PhysicsComponent {
         Rotation = other.Rotation;
         Mass = other.Mass;
         MaxSpeed = other.MaxSpeed;
+        ColliderType = other.ColliderType;
     }
 
 // -------------------------- OTHER METHODS --------------------------

@@ -1,7 +1,8 @@
 package Physics;
 
 import GameObjects.GameObject;
-import Math.Rect;
+import Math.Shapes.Rect;
+import Math.Shapes.Intersection;
 import Math.Vec2;
 
 public final class Collision {
@@ -37,7 +38,7 @@ public final class Collision {
     }
 
     boolean IntersectAAObjects(GameObject object1, GameObject object2) {
-        return Rect.AreIntersecting(object1.Physics.GetAABB(), object2.Physics.GetAABB());
+        return Intersection.Check(object1.Physics.GetAABB(), object2.Physics.GetAABB());
     }
 
     // If the objects don't intersect in object1's ref, or they don't intersect in object2's ref,
@@ -72,6 +73,6 @@ public final class Collision {
         // Check our minRelAABB against our refComponent,
         // with our refComponent's AABB centered at the origin
         refRect.CenterAt(Vec2.Zero());
-        return !Rect.AreIntersecting(minRelAABB, refRect);
+        return !Intersection.Check(minRelAABB, refRect);
     }
 }

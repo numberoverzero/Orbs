@@ -6,13 +6,15 @@ import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface IWorld {
-    boolean IsPaused();
+// -------------------------- OTHER METHODS --------------------------
+
+    void Draw(SpriteBatch batch, RenderPass pass);
     GameState GetGameState();
     ILevel GetLevel();
-    void Update(float dt);
-    void Draw(SpriteBatch batch, RenderPass pass);
+    boolean IsPaused();
     
     void LoadLevel(String levelFilePath, String stateFilePath);
     void SaveLevel(String stateFilePath);
     void UnloadLevel();
+    void Update(float dt);
 }
