@@ -32,6 +32,13 @@ public class Circle {
         CenterY = centerY;
         Radius = radius;
     }
+    
+    public Circle(Circle other)
+    {
+        CenterX = other.CenterX;
+        CenterY = other.CenterY;
+        Radius = other.Radius;
+    }
 
 // -------------------------- OTHER METHODS --------------------------
 
