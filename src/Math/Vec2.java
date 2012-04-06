@@ -18,14 +18,6 @@ public class Vec2 {
         return new Vec2(Math.cos(theta), Math.sin(theta));
     }
 
-    public static void Rotate(Vec2 vec, double theta) {
-        Rotate(vec, Vec2.Zero(), theta);
-    }
-
-    public static Vec2 Zero() {
-        return new Vec2(0);
-    }
-
     public static void Rotate(Vec2 point, Vec2 pivot, double theta) {
         double dx = point.X - pivot.X;
         double dy = point.Y - pivot.Y;
@@ -129,6 +121,26 @@ public class Vec2 {
 
     public float Mag2() {
         return X * X + Y * Y;
+    }
+
+    public void Rotate(double theta) {
+        Rotate(this, Vec2.Zero(), theta);
+    }
+
+    public static Vec2 Zero() {
+        return new Vec2(0);
+    }
+
+    public void Rotate(Vec2 pivot, double theta) {
+        double dx = X - pivot.X;
+        double dy = Y - pivot.Y;
+        double st = Math.sin(theta);
+        double ct = Math.cos(theta);
+
+        double x = pivot.X + (ct * dx) - (st * dy);
+        double y = pivot.Y + (st * dx) + (ct * dy);
+        X = (float) x;
+        Y = (float) y;
     }
 
     public Vec2 RotateOut(double theta) {

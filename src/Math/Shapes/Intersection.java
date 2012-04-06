@@ -4,7 +4,10 @@ import Math.Util;
 import Math.Vec2;
 
 public final class Intersection {
+// ------------------------------ FIELDS ------------------------------
+
     final double eps = 1E-7;
+
 // -------------------------- STATIC METHODS --------------------------
 
     public static boolean Contains(Rect rect, Vec2 point) {
@@ -20,14 +23,6 @@ public final class Intersection {
                 <= (circle.Radius + pad) * (circle.Radius + pad);
     }
 
-    public static boolean Contains(Rect rect, float x, float y, float pad) {
-        final float pad2 = pad / 2;
-        return x >= rect.Left() - pad2 &&
-                x <= rect.Right() + pad2 &&
-                y >= rect.Bottom() - pad2 &&
-                y <= rect.Top() + pad2;
-    }
-
     public static boolean Check(Rect rect, Circle circle) {
         // True does not guarantee collision.
         // False contains guarantees NOT collision.
@@ -40,6 +35,14 @@ public final class Intersection {
         return centerDist <= cornerDist + circle.Radius;
     }
 
+    public static boolean Contains(Rect rect, float x, float y, float pad) {
+        final float pad2 = pad / 2;
+        return x >= rect.Left() - pad2 &&
+                x <= rect.Right() + pad2 &&
+                y >= rect.Bottom() - pad2 &&
+                y <= rect.Top() + pad2;
+    }
+
     public static boolean Check(Circle circle, Rect rect) {
         return Check(rect, circle);
     }
@@ -49,18 +52,10 @@ public final class Intersection {
                 <= (circle1.Radius + circle2.Radius) * (circle1.Radius + circle2.Radius);
     }
 
-    public static boolean Check(Rect rect1, Rect rect2) {
-        return ((rect1.Right() >= rect2.Left()) &&
-                (rect1.Left() <= rect2.Right()) &&
-                (rect1.Top() >= rect2.Bottom()) &&
-                (rect1.Bottom() <= rect2.Top()));
-    }
-
     /*
         THIS MUTATES BOTH rect AND circle.  PASS COPIES TO THIS FUNCTION
      */
-    public static boolean Check(Rect rect, Circle circle, double rectRot)
-    {
+    public static boolean Check(Rect rect, Circle circle, double rectRot) {
         Vec2 offset = rect.Center();
         offset.Negate();
 
@@ -70,36 +65,32 @@ public final class Intersection {
 
         // Move to the unrotated coordinate system wrt the Rect (this is already done for the Rect, as OBB has 0 rot)
         Vec2 circleCenter = circle.GetCenter();
-        Vec2.Rotate(circleCenter, -rectRot);
+        circleCenter.Rotate(-rectRot);
         circle.CenterAt(circleCenter);
 
         // Now it's an unrotated rect vs circle check
         return Intersection.Check(rect, circle);
     }
 
-    /*
-       THIS MUTATES BOTH rect1 AND rect2.  PASS COPIES TO THIS FUNCTION
-    */
-    public static boolean Check(Rect rect1, Rect rect2, double rot1, double rot2)
-    {
+    public static boolean Check(Rect rect1, Rect rect2, double rot1, double rot2) {
         // If the objects don't intersect in object1's ref, or they don't intersect in object2's ref,
         // then they can't intersect
-        return !(DoesNotIntersectInRefFrame(rect1, rect2, rot1, rot2) ||
-                DoesNotIntersectInRefFrame(rect2, rect1, rot2, rot1));
+        return !(DoesNotIntersectInRefFrame(new Rect(rect1), new Rect(rect2), rot1, rot2) ||
+                DoesNotIntersectInRefFrame(new Rect(rect2), new Rect(rect1), rot2, rot1));
     }
 
     // Returns TRUE if the objects do not intersect in refRect's 0 rotation origin-centered perspective
-    static boolean DoesNotIntersectInRefFrame(Rect refRect, Rect relRect, double refRotation, double relRotation)
-    {
+    static boolean DoesNotIntersectInRefFrame(Rect refRect, Rect relRect, double refRotation, double relRotation) {
         Vec2 refCenter = refRect.Center();
         Vec2 relCenter = relRect.Center();
 
-        // Translate relCenter by -refCenter
+        // Translate relCenter by -refCenter, center rect at origin
         relCenter.Translate(refCenter.NegOut());
+        refRect.CenterAt(Vec2.Zero());
 
         // RotateOut our relCenter by negative ref rotation, so that we have effectively
         // put our ref into a coordinate system (as seen by rel) centered at the origin w/o rotation
-        Vec2.Rotate(relCenter, -refRotation);
+        relCenter.Rotate(-refRotation);
 
         // Center relRect at relCenter, then grab it's minAABB
         relRect.CenterAt(relCenter);
@@ -108,7 +99,13 @@ public final class Intersection {
 
         // Check our minRelAABB against our refComponent,
         // with our refComponent's AABB centered at the origin
-        refRect.CenterAt(Vec2.Zero());
         return !Check(minRelAABB, refRect);
+    }
+
+    public static boolean Check(Rect rect1, Rect rect2) {
+        return ((rect1.Right() >= rect2.Left()) &&
+                (rect1.Left() <= rect2.Right()) &&
+                (rect1.Top() >= rect2.Bottom()) &&
+                (rect1.Bottom() <= rect2.Top()));
     }
 }

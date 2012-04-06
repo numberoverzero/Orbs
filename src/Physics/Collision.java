@@ -1,10 +1,7 @@
 package Physics;
 
 import GameObjects.GameObject;
-import Math.Shapes.Circle;
 import Math.Shapes.Intersection;
-import Math.Shapes.Rect;
-import Math.Vec2;
 
 public final class Collision {
 // ------------------------------ FIELDS ------------------------------

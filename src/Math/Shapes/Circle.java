@@ -23,6 +23,12 @@ public class Circle {
         this(radius, 0, 0);
     }
 
+    public Circle(Circle other) {
+        CenterX = other.CenterX;
+        CenterY = other.CenterY;
+        Radius = other.Radius;
+    }
+
     public Circle(float radius, Vec2 center) {
         this(radius, center.X, center.Y);
     }
@@ -31,13 +37,6 @@ public class Circle {
         CenterX = centerX;
         CenterY = centerY;
         Radius = radius;
-    }
-    
-    public Circle(Circle other)
-    {
-        CenterX = other.CenterX;
-        CenterY = other.CenterY;
-        Radius = other.Radius;
     }
 
 // -------------------------- OTHER METHODS --------------------------
