@@ -3,6 +3,11 @@ package Math;
 public final class Util {
 // -------------------------- STATIC METHODS --------------------------
 
+    public static boolean IsZero(float value)
+    {
+        return Math.abs(value) <= 0.00000001;
+    }
+
     public static float Lerp(float val, float min, float max) {
         return min + val * (max - min);
     }
