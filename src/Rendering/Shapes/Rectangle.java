@@ -1,5 +1,6 @@
 package Rendering.Shapes;
 
+import Math.Shapes.Rect;
 import Math.Util;
 import Math.Vec2;
 import com.badlogic.gdx.graphics.Color;
@@ -22,6 +23,10 @@ public final class Rectangle {
         _temp = new Texture(p, true);
         p.dispose();
         return _temp;
+    }
+
+    public static void Draw(SpriteBatch batch, Rect rect, Color color) {
+        Draw(batch, new Vec2(rect.X, rect.Y), rect.Dimensions(), color);
     }
 
     public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 dimensions, Color color) {

@@ -95,7 +95,7 @@ public class OrbitBehavior implements IBehavior {
     }
 
     public void SetJitterUpperLimit(float jitterUpperPct) {
-        jitterPct = Util.Clamp(jitterUpperPct, 0, 1);
+        jitterPct = Util.Clamp(jitterUpperPct, -1, 1);
     }
 
     private void UpdateOrder(GameObject object) {

@@ -25,11 +25,11 @@ public final class Intersection {
 
     public static boolean Check(Rect rect, Circle circle) {
         // True does not guarantee collision.
-        // False contains guarantees NOT collision.
+        // False guarantees NOT collision.
         if (!Contains(rect, circle.CenterX, circle.CenterY, circle.Radius))
             return false;
 
-        final Vec2 rectCenter = rect.Center();
+        final Vec2 rectCenter = rect.GetCenter();
         final float centerDist = Util.Distance(circle.CenterX - rectCenter.X, circle.CenterY - rectCenter.Y);
         final float cornerDist = Util.Distance(rect.Width / 2, rect.Height / 2);
         return centerDist <= cornerDist + circle.Radius;
@@ -53,10 +53,10 @@ public final class Intersection {
     }
 
     /*
-        THIS MUTATES BOTH rect AND circle.  PASS COPIES TO THIS FUNCTION
+        THIS MODIFIES BOTH rect AND circle.  PASS COPIES TO THIS FUNCTION
      */
     public static boolean Check(Rect rect, Circle circle, double rectRot) {
-        Vec2 offset = rect.Center();
+        Vec2 offset = rect.GetCenter();
         offset.Negate();
 
         // Move to the origin, center the rectangle there
@@ -81,8 +81,8 @@ public final class Intersection {
 
     // Returns TRUE if the objects do not intersect in refRect's 0 rotation origin-centered perspective
     static boolean DoesNotIntersectInRefFrame(Rect refRect, Rect relRect, double refRotation, double relRotation) {
-        Vec2 refCenter = refRect.Center();
-        Vec2 relCenter = relRect.Center();
+        Vec2 refCenter = refRect.GetCenter();
+        Vec2 relCenter = relRect.GetCenter();
 
         // Translate relCenter by -refCenter, center rect at origin
         relCenter.Translate(refCenter.NegOut());
@@ -92,7 +92,7 @@ public final class Intersection {
         // put our ref into a coordinate system (as seen by rel) centered at the origin w/o rotation
         relCenter.Rotate(-refRotation);
 
-        // Center relRect at relCenter, then grab it's minAABB
+        // GetCenter relRect at relCenter, then grab it's minAABB
         relRect.CenterAt(relCenter);
         double theta = relRotation - refRotation;
         Rect minRelAABB = relRect.MinBoundsOf(theta);

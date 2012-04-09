@@ -1,4 +1,4 @@
-package UI;
+package ScreenManagement;
 
 /**
  * User: Joe Laptop

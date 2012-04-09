@@ -86,6 +86,14 @@ public class Vec2 {
         return new Vec2(X / c, Y / c);
     }
 
+    public boolean IsZero() {
+        return Util.IsZero(Mag2());
+    }
+
+    public float Mag2() {
+        return X * X + Y * Y;
+    }
+
     public void LinearMul(Vec2 other) {
         X *= other.X;
         Y *= other.Y;
@@ -117,10 +125,6 @@ public class Vec2 {
 
     public float Mag() {
         return (float) sqrt(Mag2());
-    }
-
-    public float Mag2() {
-        return X * X + Y * Y;
     }
 
     public void Rotate(double theta) {
