@@ -102,4 +102,10 @@ public class Rect {
         X += offset.X;
         Y += offset.Y;
     }
+    
+    public void SetDimensions(Vec2 dimensions)
+    {
+        Width = dimensions.X;
+        Height = dimensions.Y;
+    }
 }

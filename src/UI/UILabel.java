@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public class UILabel extends UIElement {
 // ------------------------------ FIELDS ------------------------------
 
-    public Text text;
+    public UIText text;
     public Color backgroundColor;
 
 // --------------------------- CONSTRUCTORS ---------------------------
@@ -16,13 +16,13 @@ public class UILabel extends UIElement {
 
     public UILabel(String id, String text, boolean appendSuffix) {
         this(id, appendSuffix);
-        this.text = new Text(this.id, text, true);
+        this.text = new UIText(this.id, text, true);
     }
 
 // -------------------------- OTHER METHODS --------------------------
 
     @Override
     public String GetControlSuffix() {
-        return "_Label";
+        return "_UILabel";
     }
 }

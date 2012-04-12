@@ -2,7 +2,7 @@ package UI;
 
 import com.badlogic.gdx.graphics.Color;
 
-public class Text extends UIElement {
+public class UIText extends UIElement {
 // ------------------------------ FIELDS ------------------------------
 
     public String text;
@@ -10,11 +10,11 @@ public class Text extends UIElement {
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public Text(String id, boolean appendSuffix) {
+    public UIText(String id, boolean appendSuffix) {
         super(id, appendSuffix);
     }
 
-    public Text(String id, String text, boolean appendSuffix) {
+    public UIText(String id, String text, boolean appendSuffix) {
         this(id, appendSuffix);
         this.text = text;
     }
@@ -23,6 +23,6 @@ public class Text extends UIElement {
 
     @Override
     public String GetControlSuffix() {
-        return "_Text";
+        return "_UIText";
     }
 }

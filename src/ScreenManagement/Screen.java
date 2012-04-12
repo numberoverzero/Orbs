@@ -1,5 +1,6 @@
 package ScreenManagement;
 
+import Math.Vec2;
 import Math.Util;
 import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +19,12 @@ public class Screen {
 
     public float TransitionOffTime = 0;
 
+    public Vec2 bottomLeftPosition = Vec2.Zero();
+    
+    public Vec2 GetBottomLeftPosition()
+    {
+        return bottomLeftPosition;
+    }
     public ScreenManager ScreenManager;
 
     boolean otherScreenHasFocus;
@@ -152,5 +159,10 @@ public class Screen {
 
         // Otherwise we are still busy transitioning.
         return true;
+    }
+    
+    public static Screen NoneScreen()
+    {
+        return new Screen();
     }
 }
