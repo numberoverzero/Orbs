@@ -7,6 +7,6 @@ public class DesktopMain {
 // --------------------------- main() method ---------------------------
 
     public static void main(String[] args) {
-        new LwjglApplication(new Game(), "Desktop App", 480, 320, false);
+        new LwjglApplication(new Game(), "Desktop App", 480, 320, true);
     }
 }

@@ -1,6 +1,6 @@
 package Math.Shapes;
 
-import Math.Vec2;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * User: Joe Laptop
@@ -29,8 +29,8 @@ public class Circle {
         Radius = other.Radius;
     }
 
-    public Circle(float radius, Vec2 center) {
-        this(radius, center.X, center.Y);
+    public Circle(float radius, Vector2 center) {
+        this(radius, center.x, center.y);
     }
 
     public Circle(float radius, float centerX, float centerY) {
@@ -41,17 +41,17 @@ public class Circle {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public void CenterAt(Vec2 center) {
-        CenterX = center.X;
-        CenterY = center.Y;
+    public void CenterAt(Vector2 center) {
+        CenterX = center.x;
+        CenterY = center.y;
     }
 
-    public Vec2 GetCenter() {
-        return new Vec2(CenterX, CenterY);
+    public Vector2 GetCenter() {
+        return new Vector2(CenterX, CenterY);
     }
 
-    public void Translate(Vec2 offset) {
-        CenterX += offset.X;
-        CenterY += offset.Y;
+    public void Translate(Vector2 offset) {
+        CenterX += offset.x;
+        CenterY += offset.y;
     }
 }

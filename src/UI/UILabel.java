@@ -1,6 +1,8 @@
 package UI;
 
+import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class UILabel extends UIElement {
 // ------------------------------ FIELDS ------------------------------
@@ -20,6 +22,9 @@ public class UILabel extends UIElement {
     }
 
 // -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public void Render(SpriteBatch batch, RenderPass pass) { }
 
     @Override
     public String GetControlSuffix() {

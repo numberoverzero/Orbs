@@ -1,6 +1,7 @@
 package Math.Shapes;
 
-import Math.Vec2;
+import Math.Util;
+import com.badlogic.gdx.math.Vector2;
 
 public class Rect {
 // ------------------------------ FIELDS ------------------------------
@@ -10,21 +11,21 @@ public class Rect {
 // -------------------------- STATIC METHODS --------------------------
 
     public static Rect MinBoundsOf(Rect rect, double rot) {
-        Vec2 pivot = rect.GetCenter();
-        Vec2[] corners = rect.Corners();
-        float minX = pivot.X, maxX = pivot.X, minY = pivot.Y, maxY = pivot.Y;
-        for (Vec2 corner : corners) {
-            Vec2.Rotate(corner, pivot, rot);
-            minX = minX < corner.X ? minX : corner.X;
-            maxX = maxX > corner.X ? maxX : corner.X;
-            minY = minY < corner.Y ? minY : corner.Y;
-            maxY = maxY > corner.Y ? maxY : corner.Y;
+        Vector2 pivot = rect.GetCenter();
+        Vector2[] corners = rect.Corners();
+        float minX = pivot.x, maxX = pivot.x, minY = pivot.y, maxY = pivot.y;
+        for (Vector2 corner : corners) {
+            Util.RotateInPlace(corner, pivot, rot);
+            minX = minX < corner.x ? minX : corner.x;
+            maxX = maxX > corner.x ? maxX : corner.x;
+            minY = minY < corner.y ? minY : corner.y;
+            maxY = maxY > corner.y ? maxY : corner.y;
         }
         return new Rect(minX, minY, maxX - minX, maxY - minY);
     }
 
-    public Vec2 GetCenter() {
-        return new Vec2(Left() + Width / 2, Bottom() + Height / 2);
+    public Vector2 GetCenter() {
+        return new Vector2(Left() + Width / 2, Bottom() + Height / 2);
     }
 
     public float Left() {
@@ -35,12 +36,12 @@ public class Rect {
         return Y;
     }
 
-    public Vec2[] Corners() {
-        Vec2[] corners = new Vec2[4];
-        corners[0] = new Vec2(Left(), Bottom());
-        corners[1] = new Vec2(Right(), Bottom());
-        corners[2] = new Vec2(Right(), Top());
-        corners[3] = new Vec2(Left(), Top());
+    public Vector2[] Corners() {
+        Vector2[] corners = new Vector2[4];
+        corners[0] = new Vector2(Left(), Bottom());
+        corners[1] = new Vector2(Right(), Bottom());
+        corners[2] = new Vector2(Right(), Top());
+        corners[3] = new Vector2(Left(), Top());
         return corners;
     }
 
@@ -52,15 +53,15 @@ public class Rect {
         return Y + Height;
     }
 
-    public static Rect MinBoundsOf(Vec2 center, float width, float height, float rot) {
+    public static Rect MinBoundsOf(Vector2 center, float width, float height, float rot) {
         Rect rect = Rect.CenteredAt(center, width, height);
         return MinBoundsOf(rect, rot);
     }
 
-    public static Rect CenteredAt(Vec2 center, float width, float height) {
+    public static Rect CenteredAt(Vector2 center, float width, float height) {
         float hw = width / 2;
         float hh = height / 2;
-        return new Rect(center.X - hw, center.Y - hh, width, height);
+        return new Rect(center.x - hw, center.y - hh, width, height);
     }
 
 // --------------------------- CONSTRUCTORS ---------------------------
@@ -85,27 +86,27 @@ public class Rect {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public void CenterAt(Vec2 center) {
-        X = center.X - Width / 2;
-        Y = center.Y - Height / 2;
+    public void CenterAt(Vector2 center) {
+        X = center.x - Width / 2;
+        Y = center.y - Height / 2;
     }
 
-    public Vec2 Dimensions() {
-        return new Vec2(Width, Height);
+    public Vector2 Dimensions() {
+        return new Vector2(Width, Height);
     }
 
     public Rect MinBoundsOf(double rot) {
         return MinBoundsOf(this, rot);
     }
 
-    public void Translate(Vec2 offset) {
-        X += offset.X;
-        Y += offset.Y;
+    public void Translate(Vector2 offset) {
+        X += offset.x;
+        Y += offset.y;
     }
     
-    public void SetDimensions(Vec2 dimensions)
+    public void SetDimensions(Vector2 dimensions)
     {
-        Width = dimensions.X;
-        Height = dimensions.Y;
+        Width = dimensions.x;
+        Height = dimensions.y;
     }
 }

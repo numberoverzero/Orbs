@@ -1,9 +1,9 @@
 package ScreenManagement;
 
-import Math.Vec2;
 import Math.Util;
 import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class Screen {
 // ------------------------------ FIELDS ------------------------------
@@ -19,9 +19,9 @@ public class Screen {
 
     public float TransitionOffTime = 0;
 
-    public Vec2 bottomLeftPosition = Vec2.Zero();
+    public Vector2 bottomLeftPosition = new Vector2();
     
-    public Vec2 GetBottomLeftPosition()
+    public Vector2 GetBottomLeftPosition()
     {
         return bottomLeftPosition;
     }

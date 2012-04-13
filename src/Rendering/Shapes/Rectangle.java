@@ -2,11 +2,11 @@ package Rendering.Shapes;
 
 import Math.Shapes.Rect;
 import Math.Util;
-import Math.Vec2;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public final class Rectangle {
 // ------------------------------ FIELDS ------------------------------
@@ -26,20 +26,20 @@ public final class Rectangle {
     }
 
     public static void Draw(SpriteBatch batch, Rect rect, Color color) {
-        Draw(batch, new Vec2(rect.X, rect.Y), rect.Dimensions(), color);
+        Draw(batch, new Vector2(rect.X, rect.Y), rect.Dimensions(), color);
     }
 
-    public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 dimensions, Color color) {
+    public static void Draw(SpriteBatch batch, Vector2 pos, Vector2 dimensions, Color color) {
         Draw(batch, pos, dimensions, 0, color);
     }
 
-    public static void Draw(SpriteBatch batch, Vec2 pos, Vec2 dimensions, double rot, Color color) {
+    public static void Draw(SpriteBatch batch, Vector2 pos, Vector2 dimensions, double rot, Color color) {
         batch.setColor(color);
-        batch.draw(texture, pos.X - dimensions.X / 2, pos.Y - dimensions.Y / 2, dimensions.X / 2, dimensions.Y / 2,
-                dimensions.X, dimensions.Y, 1, 1, Util.ToDegrees(rot), 0, 0, 1, 1, false, false);
+        batch.draw(texture, pos.x - dimensions.x / 2, pos.y - dimensions.y / 2, dimensions.x / 2, dimensions.y / 2,
+                dimensions.x, dimensions.y, 1, 1, Util.ToDegrees(rot), 0, 0, 1, 1, false, false);
     }
 
-    public static void DrawOutline(SpriteBatch batch, Vec2 pos, Vec2 dimensions,
+    public static void DrawOutline(SpriteBatch batch, Vector2 pos, Vector2 dimensions,
                                    double theta, Color color, float borderWidth) {
         batch.setColor(color);
         double[] corners = Util.GetRectCorners(dimensions, borderWidth);

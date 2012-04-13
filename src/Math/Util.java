@@ -1,5 +1,7 @@
 package Math;
 
+import com.badlogic.gdx.math.Vector2;
+
 public final class Util {
 // -------------------------- STATIC METHODS --------------------------
 
@@ -37,7 +39,7 @@ public final class Util {
         return (float) (dx * dx + dy * dy);
     }
 
-    public static double[] GetRectCorners(Vec2 dimensions, float borderWidth) {
+    public static double[] GetRectCorners(Vector2 dimensions, float borderWidth) {
         // Centered at the origin, returns corners A, B, C, D, E
         /*
           B------------------C
@@ -46,8 +48,8 @@ public final class Util {
           |                  |
           A/E----------------D
          */
-        final double d2x = dimensions.X / 2;
-        final double d2y = dimensions.Y / 2;
+        final double d2x = dimensions.x / 2;
+        final double d2y = dimensions.y / 2;
         return new double[]{
                 -d2x + borderWidth, -d2y + borderWidth,
                 -d2x + borderWidth, d2y - borderWidth,
@@ -67,11 +69,47 @@ public final class Util {
             xypairs[i + 1] = tempy;
         }
     }
+    
+    public static Vector2 FromAngle(double theta)
+    {
+        return new Vector2((float)Math.cos(theta),
+                           (float)Math.sin(theta));
+    }
+    public static Vector2 Rotate(Vector2 point, double theta)
+    {
+        return Rotate(point, new Vector2(), theta);
+    }
 
-    public static void Offset(double[] xypairs, Vec2 position) {
+    public static Vector2 Rotate(Vector2 point, Vector2 origin, double theta)
+    {
+        Vector2 outVec = new Vector2(origin);
+        final float cost = (float)Math.cos(theta);
+        final float sint = (float)Math.sin(theta);
+        outVec.x = cost * (point.x - origin.x) - sint * (point.y - origin.y);
+        outVec.y = sint * (point.x - origin.x) + cost * (point.y - origin.y);
+        return outVec;
+    }
+
+    public static void RotateInPlace(Vector2 point, double theta)
+    {
+        RotateInPlace(point, new Vector2(), theta);
+    }
+    
+    public static void RotateInPlace(Vector2 point, Vector2 origin, double theta)
+    {
+
+        final float cost = (float)Math.cos(theta);
+        final float sint = (float)Math.sin(theta);
+        final float outx = cost * (point.x - origin.x) - sint * (point.y - origin.y);
+        final float outy = sint * (point.x - origin.x) + cost * (point.y - origin.y);
+        point.x = outx;
+        point.y = outy;
+    }
+
+    public static void Offset(double[] xypairs, Vector2 position) {
         for (int i = 0; i < xypairs.length; i += 2) {
-            xypairs[i] += position.X;
-            xypairs[i + 1] += position.Y;
+            xypairs[i] += position.x;
+            xypairs[i + 1] += position.y;
         }
     }
 }

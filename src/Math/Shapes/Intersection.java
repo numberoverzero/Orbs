@@ -1,7 +1,7 @@
 package Math.Shapes;
 
 import Math.Util;
-import Math.Vec2;
+import com.badlogic.gdx.math.Vector2;
 
 public final class Intersection {
 // ------------------------------ FIELDS ------------------------------
@@ -10,12 +10,12 @@ public final class Intersection {
 
 // -------------------------- STATIC METHODS --------------------------
 
-    public static boolean Contains(Rect rect, Vec2 point) {
-        return Contains(rect, point.X, point.Y, 0);
+    public static boolean Contains(Rect rect, Vector2 point) {
+        return Contains(rect, point.x, point.y, 0);
     }
 
-    public static boolean Contains(Circle circle, Vec2 point) {
-        return Contains(circle, point.X, point.Y, 0);
+    public static boolean Contains(Circle circle, Vector2 point) {
+        return Contains(circle, point.x, point.y, 0);
     }
 
     public static boolean Contains(Circle circle, float x, float y, float pad) {
@@ -29,8 +29,8 @@ public final class Intersection {
         if (!Contains(rect, circle.CenterX, circle.CenterY, circle.Radius))
             return false;
 
-        final Vec2 rectCenter = rect.GetCenter();
-        final float centerDist = Util.Distance(circle.CenterX - rectCenter.X, circle.CenterY - rectCenter.Y);
+        final Vector2 rectCenter = rect.GetCenter();
+        final float centerDist = Util.Distance(circle.CenterX - rectCenter.x, circle.CenterY - rectCenter.y);
         final float cornerDist = Util.Distance(rect.Width / 2, rect.Height / 2);
         return centerDist <= cornerDist + circle.Radius;
     }
@@ -56,16 +56,16 @@ public final class Intersection {
         THIS MODIFIES BOTH rect AND circle.  PASS COPIES TO THIS FUNCTION
      */
     public static boolean Check(Rect rect, Circle circle, double rectRot) {
-        Vec2 offset = rect.GetCenter();
-        offset.Negate();
+        Vector2 offset = rect.GetCenter();
+        offset.mul(-1);
 
         // Move to the origin, center the rectangle there
         circle.Translate(offset);
         rect.Translate(offset);
 
         // Move to the unrotated coordinate system wrt the Rect (this is already done for the Rect, as OBB has 0 rot)
-        Vec2 circleCenter = circle.GetCenter();
-        circleCenter.Rotate(-rectRot);
+        Vector2 circleCenter = circle.GetCenter();
+        Util.RotateInPlace(circleCenter, -rectRot);
         circle.CenterAt(circleCenter);
 
         // Now it's an unrotated rect vs circle check
@@ -81,16 +81,16 @@ public final class Intersection {
 
     // Returns TRUE if the objects do not intersect in refRect's 0 rotation origin-centered perspective
     static boolean DoesNotIntersectInRefFrame(Rect refRect, Rect relRect, double refRotation, double relRotation) {
-        Vec2 refCenter = refRect.GetCenter();
-        Vec2 relCenter = relRect.GetCenter();
+        Vector2 refCenter = refRect.GetCenter();
+        Vector2 relCenter = relRect.GetCenter();
 
         // Translate relCenter by -refCenter, center rect at origin
-        relCenter.Translate(refCenter.NegOut());
-        refRect.CenterAt(Vec2.Zero());
+        relCenter.add(refCenter.mul(-1));
+        refRect.CenterAt(new Vector2());
 
         // RotateOut our relCenter by negative ref rotation, so that we have effectively
         // put our ref into a coordinate system (as seen by rel) centered at the origin w/o rotation
-        relCenter.Rotate(-refRotation);
+        Util.RotateInPlace(relCenter, -refRotation);
 
         // GetCenter relRect at relCenter, then grab it's minAABB
         relRect.CenterAt(relCenter);

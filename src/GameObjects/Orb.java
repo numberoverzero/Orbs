@@ -1,10 +1,10 @@
 package GameObjects;
 
-import Math.Vec2;
 import Rendering.RenderLayer;
 import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * User: Joe Laptop
@@ -30,7 +30,7 @@ public class Orb extends GameObject {
     public void Draw(SpriteBatch batch, RenderPass pass) {
         if (pass == RenderPass.Effects) {
             Color color;
-            Vec2 dimensions = new Vec2(Size);
+            Vector2 dimensions = new Vector2(Size, Size);
 
             //Base layer - solid background color
             color = Colors.GetColor(Hostility, RenderLayer.Base);

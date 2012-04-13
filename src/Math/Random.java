@@ -1,6 +1,8 @@
 package Math;
 
 
+import com.badlogic.gdx.math.Vector2;
+
 import static Math.Util.Lerp;
 
 public final class Random {
@@ -11,10 +13,10 @@ public final class Random {
 
 // -------------------------- STATIC METHODS --------------------------
 
-    public static Vec2 Vec2(float mag) {
+    public static Vector2 Vec2(float mag) {
         float rx = Float(-1, 1),
                 ry = Float(-1, 1);
-        return new Vec2(rx, ry).Unit().MulOut(mag);
+        return new Vector2(rx, ry).nor().mul(mag);
     }
 
     public static float Float(float min, float max) {

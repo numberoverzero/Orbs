@@ -1,17 +1,17 @@
 package UI;
 
 import Math.Shapes.Rect;
-import Math.Vec2;
 import Rendering.RenderPass;
 import ScreenManagement.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public abstract class UIElement {
 // ------------------------------ FIELDS ------------------------------
 
     protected boolean visible;
     protected Alignment halign, valign;
-    protected boolean hexpand, vexpand;
+    protected boolean hExpand, vexpand;
     public UIContainer Parent;
     protected Screen screen;
     public Screen GetScreen()
@@ -34,7 +34,7 @@ public abstract class UIElement {
     public UIElement(String id, boolean appendSuffix) {
         BoundingRect = new Rect();
         halign = valign = Alignment.Center;
-        hexpand = vexpand = false;
+        hExpand = vexpand = false;
         visible = true;
 
         if (appendSuffix)
@@ -48,37 +48,37 @@ public abstract class UIElement {
 
     public abstract void Render(SpriteBatch batch, RenderPass pass);
 
-    public Vec2 GetAbsolutePos(){
-        Vec2 pos = GetRelativePos();
+    public Vector2 GetAbsolutePos(){
+        Vector2 pos = GetRelativePos();
         if (Parent != null)
-            pos.Add(Parent.GetAbsolutePos());
+            pos.add(Parent.GetAbsolutePos());
         else
         {
             // If parent is null, grab the screen and make sure we offset by that.
             // This will allow screens to handle transition position entirely by updating the bottom left corner
-            pos.Add(GetScreen().GetBottomLeftPosition());
+            pos.add(GetScreen().GetBottomLeftPosition());
         }
         return pos;
     }
 
-    public Vec2 GetRelativePos() {
-        return new Vec2(BoundingRect.X, BoundingRect.Y);
+    public Vector2 GetRelativePos() {
+        return new Vector2(BoundingRect.X, BoundingRect.Y);
     }
     
-    public void SetRelativePos(Vec2 position)
+    public void SetRelativePos(Vector2 position)
     {
-        BoundingRect.X = position.X;
-        BoundingRect.Y = position.Y;
+        BoundingRect.X = position.x;
+        BoundingRect.Y = position.y;
     }
     
-    public void SetAbsolutePos(Vec2 position)
+    public void SetAbsolutePos(Vector2 position)
     {
         // Calculate global offset less relative offset
-        Vec2 globalOffset = GetAbsolutePos();
-        globalOffset.Sub(GetRelativePos());
+        Vector2 globalOffset = GetAbsolutePos();
+        globalOffset.sub(GetRelativePos());
 
-        Vec2 newRel = new Vec2(position);
-        newRel.Sub(globalOffset);
+        Vector2 newRel = new Vector2(position);
+        newRel.sub(globalOffset);
         SetRelativePos(newRel);
     }
 
@@ -108,7 +108,7 @@ public abstract class UIElement {
 
     public void DetermineSize() { }
 
-    public void ResetSize(Vec2 dimensions)
+    public void ResetSize(Vector2 dimensions)
     {
         BoundingRect.SetDimensions(dimensions);
     }

@@ -15,7 +15,7 @@ public class PrimitiveSteeringBehavior implements IBehavior {
 
     @Override
     public void Apply(GameObject object) {
-        object.Physics.Rotation = object.Physics.Velocity.Angle();
+        object.Physics.Rotation = object.Physics.Velocity.angle();
     }
 
     @Override

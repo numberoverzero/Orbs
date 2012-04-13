@@ -4,7 +4,7 @@ import GameObjects.GameObject;
 import GameObjects.Orders.Order;
 import Math.Random;
 import Math.Util;
-import Math.Vec2;
+import com.badlogic.gdx.math.Vector2;
 
 public class OrbitBehavior implements IBehavior {
 // ------------------------------ FIELDS ------------------------------
@@ -44,9 +44,9 @@ public class OrbitBehavior implements IBehavior {
         UpdateOrder(object);
 
         object.Physics.MaxSpeed = (float) (2 * Math.PI * orbitRadius / orbitPeriod);
-        Vec2 targetPos = CalculateTargetPos(object);
-        Vec2 direction = targetPos.SubOut(object.Physics.Position);
-        object.Physics.Velocity.Add(direction);
+        Vector2 targetPos = CalculateTargetPos(object);
+        Vector2 direction = targetPos.sub(object.Physics.Position);
+        object.Physics.Velocity.add(direction);
         JitterOrbit(object);
     }
 
@@ -71,12 +71,12 @@ public class OrbitBehavior implements IBehavior {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    private Vec2 CalculateTargetPos(GameObject object) {
-        Vec2 target = new Vec2(orbitObject.Physics.Position);
+    private Vector2 CalculateTargetPos(GameObject object) {
+        Vector2 target = new Vector2(orbitObject.Physics.Position);
         if (object.CurrentOrder == Order.Hover || object.CurrentOrder == Order.Seek) {
-            Vec2 orbitOffset = Vec2.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
-            orbitOffset.Mul(orbitRadius);
-            target.Add(orbitOffset);
+            Vector2 orbitOffset = Util.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
+            orbitOffset.mul(orbitRadius);
+            target.add(orbitOffset);
         }
         return target;
     }
@@ -86,12 +86,13 @@ public class OrbitBehavior implements IBehavior {
     }
 
     private void JitterOrbit(GameObject object) {
-        Vec2 objVel = object.Physics.Velocity;
+        Vector2 objVel = object.Physics.Velocity;
         float rpx = Random.Float(0, jitterPct),
                 rpy = Random.Float(0, jitterPct);
-        Vec2 jitterOffset = new Vec2(rpx, rpy);
-        jitterOffset.LinearMul(objVel);
-        objVel.Add(jitterOffset);
+        Vector2 jitterOffset = new Vector2(rpx, rpy);
+        jitterOffset.x *= objVel.x;
+        jitterOffset.y *= objVel.y;
+        objVel.add(jitterOffset);
     }
 
     public void SetJitterUpperLimit(float jitterUpperPct) {
@@ -101,12 +102,12 @@ public class OrbitBehavior implements IBehavior {
     private void UpdateOrder(GameObject object) {
         // Do some magic here to adjust max speed, and set acceleration to the center of the orbit.
 
-        Vec2 tarPos = orbitObject.Physics.Position;
-        Vec2 objPos = object.Physics.Position;
-        float distance2 = Vec2.Distance2(tarPos, objPos);
+        Vector2 tarPos = orbitObject.Physics.Position;
+        Vector2 objPos = object.Physics.Position;
+        float distance2 = tarPos.dst2(objPos);
 
-        Vec2 objDims = object.Physics.Dimensions;
-        float objDim = objDims.X > objDims.Y ? objDims.X : objDims.Y;
+        Vector2 objDims = object.Physics.Dimensions;
+        float objDim = objDims.x > objDims.y ? objDims.x : objDims.y;
 
         if (!object.HasOrder() || object.CurrentOrder == Order.Hover) {
             float hoverDist = orbitRadius + objDim * (2 + correctionPct / 100);
@@ -116,12 +117,12 @@ public class OrbitBehavior implements IBehavior {
             float seekDist = orbitRadius + 2 * objDim;
             if (distance2 <= seekDist * seekDist) {
                 object.CurrentOrder = Order.Hover;
-                Vec2 direction = tarPos.SubOut(objPos);
-                if (direction.Mag2() > 0) {
-                    direction.Normalize();
+                Vector2 direction = tarPos.cpy().sub(objPos);
+                if (direction.len2() > 0) {
+                    direction.nor();
                     float rTheta = (float) (Random.Float() * 2 * Math.PI);
-                    direction = direction.RotateOut(rTheta);
-                    orbitElapsed = (float) (Math.asin(direction.Y) * orbitPeriod / (2 * Math.PI));
+                    Util.RotateInPlace(direction, rTheta);
+                    orbitElapsed = (float) (Math.asin(direction.y) * orbitPeriod / (2 * Math.PI));
                     orbitSign = Random.Sign();
                 }
             }

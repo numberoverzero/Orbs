@@ -2,14 +2,14 @@ package Physics;
 
 import Math.Shapes.Circle;
 import Math.Shapes.Rect;
-import Math.Vec2;
+import com.badlogic.gdx.math.Vector2;
 
 public class PhysicsComponent {
 // ------------------------------ FIELDS ------------------------------
 
     static final float DEFAULT_ACCEL_DECAY = 0.0f;
 
-    public Vec2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
+    public Vector2 Dimensions, Position, Velocity, Acceleration, DecayAcceleration;
     public float Mass, MaxSpeed;
     public double Rotation;
     public ColliderType ColliderType;
@@ -17,11 +17,11 @@ public class PhysicsComponent {
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public PhysicsComponent() {
-        Position = Vec2.Zero();
-        Velocity = Vec2.Zero();
-        Acceleration = new Vec2(DEFAULT_ACCEL_DECAY);
-        Dimensions = Vec2.Zero();
-        DecayAcceleration = Vec2.Zero();
+        Position = new Vector2();
+        Velocity = new Vector2();
+        Acceleration = new Vector2(DEFAULT_ACCEL_DECAY, DEFAULT_ACCEL_DECAY);
+        Dimensions = new Vector2();
+        DecayAcceleration = new Vector2();
         Rotation = 0;
         Mass = 1;
         MaxSpeed = Float.MAX_VALUE;
@@ -29,11 +29,11 @@ public class PhysicsComponent {
     }
 
     public PhysicsComponent(PhysicsComponent other) {
-        Position = new Vec2(other.Position);
-        Velocity = new Vec2(other.Velocity);
-        Acceleration = new Vec2(other.Acceleration);
-        Dimensions = new Vec2(other.Dimensions);
-        DecayAcceleration = new Vec2(other.DecayAcceleration);
+        Position = new Vector2(other.Position);
+        Velocity = new Vector2(other.Velocity);
+        Acceleration = new Vector2(other.Acceleration);
+        Dimensions = new Vector2(other.Dimensions);
+        DecayAcceleration = new Vector2(other.DecayAcceleration);
         Rotation = other.Rotation;
         Mass = other.Mass;
         MaxSpeed = other.MaxSpeed;
@@ -42,13 +42,13 @@ public class PhysicsComponent {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public void ApplyForce(Vec2 force) {
-        Vec2 accelOffset = force.DivOut(Mass);
-        Acceleration.Add(accelOffset);
+    public void ApplyForce(Vector2 force) {
+        Vector2 accelOffset = force.cpy().mul(1/Mass);
+        Acceleration.add(accelOffset);
     }
 
-    public void ApplyForce(Vec2 direction, float mag) {
-        ApplyForce(direction.MulOut(mag));
+    public void ApplyForce(Vector2 direction, float mag) {
+        ApplyForce(direction.cpy().mul(mag));
     }
 
     public Rect GetAABB() {
@@ -60,33 +60,33 @@ public class PhysicsComponent {
     }
 
     public float GetRadius() {
-        return Dimensions.X;
+        return Dimensions.x;
     }
 
     public Rect GetOBB() {
-        return Rect.CenteredAt(Position, Dimensions.X, Dimensions.Y);
+        return Rect.CenteredAt(Position, Dimensions.x, Dimensions.y);
     }
 
     public void SetRadius(float radius) {
-        Dimensions.X = radius;
+        Dimensions.x = radius;
     }
 
     public void Update(float dt) {
-        Acceleration.X *= (1 - DecayAcceleration.X);
-        Acceleration.Y *= (1 - DecayAcceleration.Y);
+        Acceleration.x *= (1 - DecayAcceleration.x);
+        Acceleration.y *= (1 - DecayAcceleration.y);
 
-        Velocity.X += Acceleration.X * dt;
-        Velocity.Y += Acceleration.Y * dt;
+        Velocity.x += Acceleration.x * dt;
+        Velocity.y += Acceleration.y * dt;
         ClampVelocity();
 
-        Position.X += Velocity.X * dt;
-        Position.Y += Velocity.Y * dt;
+        Position.x += Velocity.x * dt;
+        Position.y += Velocity.y * dt;
     }
 
     void ClampVelocity() {
-        if (Velocity.Mag2() > MaxSpeed * MaxSpeed) {
-            Velocity.Normalize();
-            Velocity.Mul(MaxSpeed);
+        if (Velocity.len2() > MaxSpeed * MaxSpeed) {
+            Velocity.nor();
+            Velocity.mul(MaxSpeed);
         }
     }
 }
