@@ -72,7 +72,7 @@ public class OrbitBehavior implements IBehavior {
 // -------------------------- OTHER METHODS --------------------------
 
     private Vector2 CalculateTargetPos(GameObject object) {
-        Vector2 target = new Vector2(orbitObject.Physics.Position);
+        Vector2 target = orbitObject.Physics.Position.cpy();
         if (object.CurrentOrder == Order.Hover || object.CurrentOrder == Order.Seek) {
             Vector2 orbitOffset = Util.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
             orbitOffset.mul(orbitRadius);

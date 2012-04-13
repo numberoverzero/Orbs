@@ -24,10 +24,11 @@ public class UIText extends UIElement {
 // -------------------------- OTHER METHODS --------------------------
 
     @Override
-    public void Render(SpriteBatch batch, RenderPass pass) { }
-
-    @Override
     public String GetControlSuffix() {
         return "_UIText";
+    }
+
+    @Override
+    public void Render(SpriteBatch batch, RenderPass pass) {
     }
 }

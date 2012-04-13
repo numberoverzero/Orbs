@@ -23,6 +23,7 @@ public class UIManager {
     }
 
 // --------------------------- CONSTRUCTORS ---------------------------
+
     ;
 
     private UIManager() {

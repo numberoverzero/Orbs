@@ -24,10 +24,11 @@ public class UILabel extends UIElement {
 // -------------------------- OTHER METHODS --------------------------
 
     @Override
-    public void Render(SpriteBatch batch, RenderPass pass) { }
-
-    @Override
     public String GetControlSuffix() {
         return "_UILabel";
+    }
+
+    @Override
+    public void Render(SpriteBatch batch, RenderPass pass) {
     }
 }

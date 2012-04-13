@@ -22,8 +22,6 @@ import com.badlogic.gdx.math.Vector2;
 public class Game implements ApplicationListener {
 // ------------------------------ FIELDS ------------------------------
 
-    private ShaderProgram shader;
-    private Mesh mesh;
     static SpriteBatch batch;
     static Texture texture;
     static int width = 100, height = 50;
@@ -31,6 +29,8 @@ public class Game implements ApplicationListener {
     int nOrbs = 10;
 
     int centerX, centerY;
+    private ShaderProgram shader;
+    private Mesh mesh;
 
 // ------------------------ INTERFACE METHODS ------------------------
 
@@ -44,42 +44,6 @@ public class Game implements ApplicationListener {
         SetupShader();
 
         MakeOrbs();
-    }
-
-    void MakeOrbs()
-    {
-        centerX = Gdx.graphics.getWidth() / 2;
-        centerY = Gdx.graphics.getHeight() / 2;
-        Orb orb;
-        for (int i = 0; i < nOrbs; i++) {
-            orb = new Orb(10, 4, true, true);
-            orb.Physics.Position = new Vector2(centerX + 80, centerY);
-            orb.Hostility = Hostility.Player;
-            orb.Colors.SetColor(Hostility.Player, RenderLayer.Base, new Color(72 / 255f, 61 / 255f, 139 / 255f, 255 / 255f));
-            orb.Colors.SetColor(Hostility.Player, RenderLayer.Highlight, new Color(106 / 255f, 90 / 255f, 205 / 255f, 255 / 255f));
-
-            GameObject orbitTarget = new GameObject(1, true, false);
-            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
-            IBehavior orbitBehavior = new OrbitBehavior(orbitTarget);
-            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
-            orb.AddBehavior(orbitBehavior);
-
-            IBehavior steering = new PrimitiveSteeringBehavior();
-            orb.AddBehavior(steering);
-
-            orbs.AddGameObject(orb);
-        }
-    }
-
-    void SetupShader()
-    {
-        ShaderProgram.pedantic = false;
-        shader = new ShaderProgram(Gdx.files.internal("assets/default.vert").readString(),
-                Gdx.files.internal("assets/default.frag").readString());
-        if(!shader.isCompiled()) {
-            Gdx.app.log("Game", shader.getLog());
-        }
-        batch.setShader(null);
     }
 
     @Override
@@ -116,5 +80,41 @@ public class Game implements ApplicationListener {
     public void dispose() {
         shader.dispose();
         mesh.dispose();
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    void MakeOrbs() {
+        centerX = Gdx.graphics.getWidth() / 2;
+        centerY = Gdx.graphics.getHeight() / 2;
+        Orb orb;
+        for (int i = 0; i < nOrbs; i++) {
+            orb = new Orb(10, 4, true, true);
+            orb.Physics.Position = new Vector2(centerX + 80, centerY);
+            orb.Hostility = Hostility.Player;
+            orb.Colors.SetColor(Hostility.Player, RenderLayer.Base, new Color(72 / 255f, 61 / 255f, 139 / 255f, 255 / 255f));
+            orb.Colors.SetColor(Hostility.Player, RenderLayer.Highlight, new Color(106 / 255f, 90 / 255f, 205 / 255f, 255 / 255f));
+
+            GameObject orbitTarget = new GameObject(1, true, false);
+            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
+            IBehavior orbitBehavior = new OrbitBehavior(orbitTarget);
+            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
+            orb.AddBehavior(orbitBehavior);
+
+            IBehavior steering = new PrimitiveSteeringBehavior();
+            orb.AddBehavior(steering);
+
+            orbs.AddGameObject(orb);
+        }
+    }
+
+    void SetupShader() {
+        ShaderProgram.pedantic = false;
+        shader = new ShaderProgram(Gdx.files.internal("assets/default.vert").readString(),
+                Gdx.files.internal("assets/default.frag").readString());
+        if (!shader.isCompiled()) {
+            Gdx.app.log("Game", shader.getLog());
+        }
+        batch.setShader(null);
     }
 }

@@ -19,12 +19,16 @@ public final class Util {
         return val;
     }
 
-    public static float ToRadians(double degrees) {
-        return (float) (degrees * Math.PI / 180);
-    }
-
     public static float ToDegrees(double radians) {
         return (float) (radians * 180 / Math.PI);
+    }
+
+    public static double Angle(Vector2 direction) {
+        return ToRadians(direction.angle());
+    }
+
+    public static float ToRadians(double degrees) {
+        return (float) (degrees * Math.PI / 180);
     }
 
     public static double Angle(double y, double x) {
@@ -69,37 +73,32 @@ public final class Util {
             xypairs[i + 1] = tempy;
         }
     }
-    
-    public static Vector2 FromAngle(double theta)
-    {
-        return new Vector2((float)Math.cos(theta),
-                           (float)Math.sin(theta));
-    }
-    public static Vector2 Rotate(Vector2 point, double theta)
-    {
+
+    public static Vector2 Rotate(Vector2 point, double theta) {
         return Rotate(point, new Vector2(), theta);
     }
 
-    public static Vector2 Rotate(Vector2 point, Vector2 origin, double theta)
-    {
+    public static Vector2 Rotate(Vector2 point, Vector2 origin, double theta) {
         Vector2 outVec = new Vector2(origin);
-        final float cost = (float)Math.cos(theta);
-        final float sint = (float)Math.sin(theta);
+        final float cost = (float) Math.cos(theta);
+        final float sint = (float) Math.sin(theta);
         outVec.x = cost * (point.x - origin.x) - sint * (point.y - origin.y);
         outVec.y = sint * (point.x - origin.x) + cost * (point.y - origin.y);
         return outVec;
     }
 
-    public static void RotateInPlace(Vector2 point, double theta)
-    {
-        RotateInPlace(point, new Vector2(), theta);
+    public static Vector2 FromAngle(double theta) {
+        return new Vector2((float) Math.cos(theta),
+                (float) Math.sin(theta));
     }
-    
-    public static void RotateInPlace(Vector2 point, Vector2 origin, double theta)
-    {
 
-        final float cost = (float)Math.cos(theta);
-        final float sint = (float)Math.sin(theta);
+    public static void RotateInPlace(Vector2 point, double theta) {
+        point.rotate((float) theta);
+    }
+
+    public static void RotateInPlace(Vector2 point, Vector2 origin, double theta) {
+        final float cost = (float) Math.cos(theta);
+        final float sint = (float) Math.sin(theta);
         final float outx = cost * (point.x - origin.x) - sint * (point.y - origin.y);
         final float outy = sint * (point.x - origin.x) + cost * (point.y - origin.y);
         point.x = outx;

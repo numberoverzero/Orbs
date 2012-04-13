@@ -6,14 +6,16 @@ package UI;
  * Time: 9:25 AM
  */
 public class UISingleContainer extends UIContainer {
-    @Override
-    public String GetControlSuffix()
-    {
-        return "_UISingleContainer";
-    }
-    
-    public UISingleContainer(String id, boolean appendSuffix)
-    {
+// --------------------------- CONSTRUCTORS ---------------------------
+
+    public UISingleContainer(String id, boolean appendSuffix) {
         super(id, appendSuffix);
+    }
+
+// -------------------------- OTHER METHODS --------------------------
+
+    @Override
+    public String GetControlSuffix() {
+        return "_UISingleContainer";
     }
 }

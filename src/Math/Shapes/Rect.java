@@ -99,14 +99,13 @@ public class Rect {
         return MinBoundsOf(this, rot);
     }
 
+    public void SetDimensions(Vector2 dimensions) {
+        Width = dimensions.x;
+        Height = dimensions.y;
+    }
+
     public void Translate(Vector2 offset) {
         X += offset.x;
         Y += offset.y;
-    }
-    
-    public void SetDimensions(Vector2 dimensions)
-    {
-        Width = dimensions.x;
-        Height = dimensions.y;
     }
 }

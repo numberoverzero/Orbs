@@ -20,11 +20,6 @@ public class Screen {
     public float TransitionOffTime = 0;
 
     public Vector2 bottomLeftPosition = new Vector2();
-    
-    public Vector2 GetBottomLeftPosition()
-    {
-        return bottomLeftPosition;
-    }
     public ScreenManager ScreenManager;
 
     boolean otherScreenHasFocus;
@@ -43,6 +38,12 @@ public class Screen {
     // transition finishes.
     protected boolean isExiting = false;
 
+// -------------------------- STATIC METHODS --------------------------
+
+    public static Screen NoneScreen() {
+        return new Screen();
+    }
+
 // -------------------------- OTHER METHODS --------------------------
 
     public void Draw(SpriteBatch batch, RenderPass pass) {
@@ -59,6 +60,10 @@ public class Screen {
             // Otherwise flag that it should transition off and then exit.
             isExiting = true;
         }
+    }
+
+    public Vector2 GetBottomLeftPosition() {
+        return bottomLeftPosition;
     }
 
     public ScreenState GetScreenState() {
@@ -159,10 +164,5 @@ public class Screen {
 
         // Otherwise we are still busy transitioning.
         return true;
-    }
-    
-    public static Screen NoneScreen()
-    {
-        return new Screen();
     }
 }

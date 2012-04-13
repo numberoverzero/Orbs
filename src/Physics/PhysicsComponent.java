@@ -43,7 +43,7 @@ public class PhysicsComponent {
 // -------------------------- OTHER METHODS --------------------------
 
     public void ApplyForce(Vector2 force) {
-        Vector2 accelOffset = force.cpy().mul(1/Mass);
+        Vector2 accelOffset = force.cpy().mul(1 / Mass);
         Acceleration.add(accelOffset);
     }
 
