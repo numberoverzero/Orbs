@@ -89,7 +89,7 @@ public class Game implements ApplicationListener {
         centerY = Gdx.graphics.getHeight() / 2;
         Orb orb;
         for (int i = 0; i < nOrbs; i++) {
-            orb = new Orb(10, 4, true, true);
+            orb = new Orb(30, 4, true, true);
             orb.Physics.Position = new Vector2(centerX + 80, centerY);
             orb.Hostility = Hostility.Player;
             orb.Colors.SetColor(Hostility.Player, RenderLayer.Base, new Color(72 / 255f, 61 / 255f, 139 / 255f, 255 / 255f));
@@ -115,6 +115,6 @@ public class Game implements ApplicationListener {
         if (!shader.isCompiled()) {
             Gdx.app.log("Game", shader.getLog());
         }
-        batch.setShader(null);
+        batch.setShader(shader);
     }
 }
