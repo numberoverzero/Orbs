@@ -79,7 +79,6 @@ public class GameObject {
 
     public void Update(float dt) {
         UpdateBehaviors(dt);
-        Physics.Update(dt);
     }
 
     void UpdateBehaviors(float dt) {

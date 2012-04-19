@@ -7,6 +7,7 @@ import GameObjects.GameObject;
 import GameObjects.GameObjectIterable;
 import GameObjects.Hostility;
 import OrbGame.Orb;
+import OrbGame.Physics.PhysicsSystem;
 import Rendering.RenderLayer;
 import Rendering.RenderPass;
 import com.badlogic.gdx.ApplicationListener;
@@ -25,6 +26,7 @@ public class Game implements ApplicationListener {
     static Texture texture;
     static int width = 100, height = 50;
     GameObjectIterable<Orb> orbs = new GameObjectIterable<Orb>();
+    PhysicsSystem physicsSystem = new PhysicsSystem();
     int nOrbs = 10;
 
     int centerX, centerY;
@@ -34,6 +36,7 @@ public class Game implements ApplicationListener {
 
     public Game() {
         orbs.Hostility = Hostility.Player;
+        physicsSystem.player = orbs;
     }
 
 // ------------------------ INTERFACE METHODS ------------------------
@@ -56,6 +59,7 @@ public class Game implements ApplicationListener {
     public void render() {
         float dt = Gdx.graphics.getDeltaTime();
         orbs.Update(dt);
+        physicsSystem.Update(dt);
 
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         batch.begin();
