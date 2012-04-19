@@ -3,7 +3,7 @@ package OrbGame.Behaviors;
 import GameEvents.EventWatchers.EventWatchTiming;
 import GameEvents.EventWatchers.IEventWatcher;
 import GameEvents.GameEvent;
-import GameEvents.GameObjectEvents.GameObjectCollisionEvent;
+import GameEvents.GameObjectEvents.CollisionEventArgs;
 import GameObjects.Behaviors.IBehavior;
 import GameObjects.GameObject;
 import GameObjects.GameObjectIterable;
@@ -17,20 +17,20 @@ import java.util.ArrayList;
 public class OrbConversionBehavior implements IBehavior, IEventWatcher {
 // ------------------------------ FIELDS ------------------------------
 
-    GameObjectIterable converter;
-    GameObject converterObject;
+    GameObjectIterable converterContainer;
+    GameObject converterCollisionObject;
     boolean isEnabled = true;
     int minConversionHealth, maxConversionHealth;
     ArrayList<Hostility> convertableHostilities = new ArrayList<Hostility>();
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public OrbConversionBehavior(GameObjectIterable converter,
-                                 GameObject converterObject,
+    public OrbConversionBehavior(GameObjectIterable converterContainer,
+                                 GameObject converterCollisionObject,
                                  int minConversionHealth,
                                  int maxConversionHealth) {
-        this.converter = converter;
-        this.converterObject = converterObject;
+        this.converterContainer = converterContainer;
+        this.converterCollisionObject = converterCollisionObject;
         this.minConversionHealth = minConversionHealth;
         this.maxConversionHealth = maxConversionHealth;
     }
@@ -49,6 +49,10 @@ public class OrbConversionBehavior implements IBehavior, IEventWatcher {
     @Override
     public void Destroy() {
         isEnabled = false;
+        converterCollisionObject = null;
+        converterContainer = null;
+        minConversionHealth = maxConversionHealth = 0;
+        convertableHostilities = null;
     }
 
     @Override
@@ -70,7 +74,7 @@ public class OrbConversionBehavior implements IBehavior, IEventWatcher {
     public boolean MeetsCriteria(GameObject object) {
         if (!isEnabled)
             return false;
-        if (object == converterObject)
+        if (object == converterCollisionObject)
             return false;
         if (object.Health < minConversionHealth ||
                 object.Health > maxConversionHealth)
@@ -96,26 +100,30 @@ public class OrbConversionBehavior implements IBehavior, IEventWatcher {
 
     @Override
     public void InspectEvent(GameEvent event) {
-        GameObjectCollisionEvent cEvent = (GameObjectCollisionEvent) event;
-        if (cEvent == null)
+        CollisionEventArgs cEventArgs = (CollisionEventArgs) event.args;
+        if (cEventArgs == null)
             return;
-        GameObject collider = cEvent.dst;
-        GameObject potentialConvert = cEvent.src;
-        if (converterObject != null && converterObject == collider) {
+        GameObject collider = event.dst;
+        GameObject potentialConvert = event.src;
+        if (converterCollisionObject != null && converterCollisionObject == collider) {
             ApplyWithoutCollisionCheck(potentialConvert);
         } else {
             // Check the whole group for the collider
-            if (converter.contains(collider))
+            if (converterContainer.contains(collider))
                 ApplyWithoutCollisionCheck(potentialConvert);
         }
     }
 
 // -------------------------- OTHER METHODS --------------------------
 
+    public void AddConvertableHostility(Hostility hostility) {
+        convertableHostilities.add(hostility);
+    }
+
     private void ApplyWithoutCollisionCheck(GameObject object) {
         if (!isEnabled)
             return;
-        if (object == converterObject)
+        if (object == converterCollisionObject)
             return;
         if (object.Health < minConversionHealth ||
                 object.Health > maxConversionHealth)
@@ -129,17 +137,24 @@ public class OrbConversionBehavior implements IBehavior, IEventWatcher {
         Orb asOrb = (Orb) object;
         if (asOrb == null)
             return;
-        Orb newOrb = new Orb(asOrb);
-        converter.AddGameObject(newOrb);
+
+        Orb newOrb = new Orb(asOrb, true);
+        converterContainer.AddGameObject(newOrb);
+
+        object.Destroy(true);
     }
 
     private boolean IsColliding(GameObject object) {
-        if (converterObject == null) {
+        if (converterCollisionObject == null) {
             // Check the whole group
-            CollisionResult result = Collision.CheckIterable(converter, object);
+            CollisionResult result = Collision.CheckIterable(converterContainer, object);
             return result.Collided;
         } else {
-            return Collision.Check(converterObject, object);
+            return Collision.Check(converterCollisionObject, object);
         }
+    }
+
+    public void RemoveConvertableHostility(Hostility hostility) {
+        convertableHostilities.remove(hostility);
     }
 }

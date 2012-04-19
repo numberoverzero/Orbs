@@ -40,7 +40,7 @@ public class GameObjectIterable<TGameObj extends GameObject> extends GameObject 
             gObj.Draw(batch, pass);
     }
 
-    public boolean HasInactiveGameObject() {
+    public boolean HasInactiveGameObjects() {
         for (TGameObj gObj : objects) {
             if (!gObj.Active) {
                 return true;

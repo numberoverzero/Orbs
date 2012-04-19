@@ -1,6 +1,9 @@
 package OrbGame;
 
+import GameEvents.GameEventArgs;
+import GameEvents.GameObjectEvents.CollisionEventArgs;
 import GameObjects.GameObject;
+import GameObjects.HostilityUtil;
 import Rendering.RenderLayer;
 import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.Color;
@@ -20,8 +23,8 @@ public class Orb extends GameObject {
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public Orb(Orb orb) {
-        super(orb);
+    public Orb(Orb orb, boolean fireOnCreateEvent) {
+        super(orb, fireOnCreateEvent);
         Size = orb.Size;
     }
 
@@ -47,6 +50,22 @@ public class Orb extends GameObject {
             float lineWidth = BORDER_PCT * Size;
             Rendering.Shapes.Rectangle.DrawOutline(batch, Physics.Position, dimensions,
                     Physics.Rotation, color, lineWidth);
+        }
+    }
+
+    @Override
+    public void OnGameEvent(GameObject src, GameEventArgs args) {
+        // Orb-orb collision
+        CollisionEventArgs cEventArgs = (CollisionEventArgs) args;
+        if (cEventArgs != null) {
+            Orb colliderOrb = (Orb) src;
+            if (colliderOrb != null) {
+                boolean isEnemyOrb = HostilityUtil.IsEnemy(this.Hostility, colliderOrb.Hostility);
+                if (isEnemyOrb) {
+                    // TODO: Refactor to pull a damage amount from the colliding Orb instead of using const dmg 1
+                    Health--;
+                }
+            }
         }
     }
 }

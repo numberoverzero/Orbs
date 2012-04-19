@@ -3,6 +3,7 @@ package GameObjects;
 import GameEvents.GameEventArgs;
 import GameEvents.GameEventManager;
 import GameEvents.GameObjectEvents.GameObjectCreatedEvent;
+import GameEvents.GameObjectEvents.GameObjectDestroyedEvent;
 import GameObjects.Behaviors.IBehavior;
 import GameObjects.Orders.Order;
 import Physics.PhysicsComponent;
@@ -36,7 +37,7 @@ public class GameObject {
         this(health, health > 0, true);
     }
 
-    public GameObject(GameObject other) {
+    public GameObject(GameObject other, boolean fireOnCreateEvent) {
         dirty = other.dirty;
         Active = other.Active;
         Health = other.Health;
@@ -45,6 +46,8 @@ public class GameObject {
         Physics = new PhysicsComponent(other.Physics);
         Colors = other.Colors;
         CurrentOrder = other.CurrentOrder;
+        if (fireOnCreateEvent)
+            EventManager.AddEvent(new GameObjectCreatedEvent(this));
     }
 
     public GameObject(int health, boolean active, boolean fireOnCreateEvent) {
@@ -54,13 +57,20 @@ public class GameObject {
         Behaviors = new ArrayList<IBehavior>();
         Colors = new ColorScheme();
         CurrentOrder = Order.None;
-        EventManager.AddEvent(new GameObjectCreatedEvent(this));
+        if (fireOnCreateEvent)
+            EventManager.AddEvent(new GameObjectCreatedEvent(this));
     }
 
 // -------------------------- OTHER METHODS --------------------------
 
     public void AddBehavior(IBehavior behavior) {
         Behaviors.add(behavior);
+    }
+
+    public void Destroy(boolean fireOnDestroyEvent) {
+        Active = false;
+        if (fireOnDestroyEvent)
+            EventManager.AddEvent(new GameObjectDestroyedEvent(this));
     }
 
     public void Draw(SpriteBatch batch, RenderPass pass) {

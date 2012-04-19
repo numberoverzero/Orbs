@@ -1,7 +1,8 @@
 package OrbGame.Physics;
 
+import GameEvents.GameEvent;
 import GameEvents.GameEventManager;
-import GameEvents.GameObjectEvents.GameObjectCollisionEvent;
+import GameEvents.GameObjectEvents.CollisionEventArgs;
 import GameObjects.GameObjectIterable;
 import OrbGame.Orb;
 import Physics.Collision;
@@ -47,8 +48,9 @@ public class PhysicsSystem {
     }
 
     void ResolveOrbOrbCollision(Orb orb1, Orb orb2) {
-        GameObjectCollisionEvent cEvent1 = new GameObjectCollisionEvent(orb1, orb2, null, 0);
-        GameObjectCollisionEvent cEvent2 = new GameObjectCollisionEvent(orb2, orb1, null, 0);
+        CollisionEventArgs collisionEventArgs = new CollisionEventArgs();
+        GameEvent cEvent1 = new GameEvent(orb1, orb2, collisionEventArgs, 0);
+        GameEvent cEvent2 = new GameEvent(orb2, orb1, collisionEventArgs, 0);
         EventManager.AddEvent(cEvent1);
         EventManager.AddEvent(cEvent2);
     }

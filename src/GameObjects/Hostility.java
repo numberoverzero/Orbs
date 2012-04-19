@@ -1,3 +1,3 @@
 package GameObjects;
 
-public enum Hostility {None, Player, Friend, Neutral, Enemy}
+public enum Hostility {None, Any, Player, Friend, Neutral, Enemy}
