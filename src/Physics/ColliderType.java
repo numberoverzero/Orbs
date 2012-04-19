@@ -7,5 +7,6 @@ package Physics;
  */
 public enum ColliderType {
     Rectangle,
-    Circle
+    Circle,
+    Group
 }

@@ -6,11 +6,11 @@ import Math.Shapes.Intersection;
 public final class Collision {
 // ------------------------------ FIELDS ------------------------------
 
-    final double eps = 1E-7;
+    static final double eps = 1E-7;
 
-// -------------------------- OTHER METHODS --------------------------
+// -------------------------- STATIC METHODS --------------------------
 
-    public CollisionResult Check(Iterable<GameObject> gObjIter1, Iterable<GameObject> gObjIter2) {
+    public static CollisionResult CheckIterables(Iterable<GameObject> gObjIter1, Iterable<GameObject> gObjIter2) {
         for (GameObject gObj1 : gObjIter1) {
             for (GameObject gObj2 : gObjIter2) {
                 if (Check(gObj1, gObj2))
@@ -20,15 +20,7 @@ public final class Collision {
         return new CollisionResult();
     }
 
-    public CollisionResult Check(Iterable<GameObject> gObjIter, GameObject gameObject) {
-        for (GameObject gObj : gObjIter) {
-            if (Check(gObj, gameObject))
-                return new CollisionResult(gObj, gameObject);
-        }
-        return new CollisionResult();
-    }
-
-    public boolean Check(GameObject object1, GameObject object2) {
+    public static boolean Check(GameObject object1, GameObject object2) {
         PhysicsComponent physics1 = object1.Physics;
         PhysicsComponent physics2 = object2.Physics;
         boolean mayNeedRotatedCheck = Math.abs(object1.Physics.Rotation) < eps &&
@@ -42,7 +34,7 @@ public final class Collision {
             return IntersectAlignedObjects(physics1, physics2);
     }
 
-    boolean IntersectRotatedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
+    static boolean IntersectRotatedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
         ColliderType type1 = physics1.ColliderType;
         ColliderType type2 = physics2.ColliderType;
 
@@ -58,7 +50,7 @@ public final class Collision {
             return false;
     }
 
-    boolean IntersectAlignedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
+    static boolean IntersectAlignedObjects(PhysicsComponent physics1, PhysicsComponent physics2) {
         ColliderType type1 = physics1.ColliderType;
         ColliderType type2 = physics2.ColliderType;
         if (type1 == ColliderType.Circle && type2 == ColliderType.Circle)
@@ -75,5 +67,13 @@ public final class Collision {
 
         else
             return false;
+    }
+
+    public static CollisionResult CheckIterable(Iterable<GameObject> gObjIter, GameObject gameObject) {
+        for (GameObject gObj : gObjIter) {
+            if (Check(gObj, gameObject))
+                return new CollisionResult(gObj, gameObject);
+        }
+        return new CollisionResult();
     }
 }

@@ -13,6 +13,7 @@ public class OrbitBehavior implements IBehavior {
     float orbitRadius, orbitPeriod, orbitElapsed, orbitSign, orbitMag,
             correctionPct, jitterPct;
     GameObject orbitObject;
+    boolean isEnabled = true;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -53,6 +54,21 @@ public class OrbitBehavior implements IBehavior {
     @Override
     public void Destroy() {
         orbitObject = null;
+    }
+
+    @Override
+    public void Disable() {
+        isEnabled = false;
+    }
+
+    @Override
+    public void Enable() {
+        isEnabled = true;
+    }
+
+    @Override
+    public boolean IsEnabled() {
+        return isEnabled;
     }
 
     @Override

@@ -4,6 +4,7 @@
       <w>aabb</w>
       <w>accel</w>
       <w>collider</w>
+      <w>convertable</w>
       <w>halign</w>
       <w>iter</w>
       <w>iterable</w>
@@ -16,6 +17,7 @@
       <w>tempx</w>
       <w>tempy</w>
       <w>valign</w>
+      <w>vert</w>
       <w>xypairs</w>
     </words>
   </dictionary>

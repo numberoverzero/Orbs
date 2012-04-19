@@ -1,9 +1,12 @@
 package GameObjects;
 
+import Rendering.RenderPass;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class GameObjectIterable<TGameObj extends GameObject> implements Iterable<TGameObj> {
+public class GameObjectIterable<TGameObj extends GameObject> extends GameObject implements Iterable<TGameObj> {
 // ------------------------------ FIELDS ------------------------------
 
     protected ArrayList<TGameObj> objects = new ArrayList<TGameObj>();
@@ -20,6 +23,7 @@ public class GameObjectIterable<TGameObj extends GameObject> implements Iterable
 // -------------------------- OTHER METHODS --------------------------
 
     public void AddGameObject(TGameObj gObject) {
+        gObject.Hostility = this.Hostility;
         objects.add(gObject);
     }
 
@@ -28,6 +32,12 @@ public class GameObjectIterable<TGameObj extends GameObject> implements Iterable
             if (!objects.get(i).Active)
                 objects.remove(i);
         }
+    }
+
+    @Override
+    public void Draw(SpriteBatch batch, RenderPass pass) {
+        for (TGameObj gObj : this)
+            gObj.Draw(batch, pass);
     }
 
     public boolean HasInactiveGameObject() {
@@ -50,6 +60,16 @@ public class GameObjectIterable<TGameObj extends GameObject> implements Iterable
 
     public void RemoveGameObject(TGameObj gObject) {
         objects.remove(gObject);
+    }
+
+    @Override
+    public void Update(float dt) {
+        for (TGameObj gObj : this)
+            gObj.Update(dt);
+    }
+
+    public boolean contains(TGameObj gObject) {
+        return objects.contains(gObject);
     }
 
 // -------------------------- INNER CLASSES --------------------------

@@ -4,6 +4,10 @@ import GameObjects.GameObject;
 import Math.Util;
 
 public class PrimitiveSteeringBehavior implements IBehavior {
+// ------------------------------ FIELDS ------------------------------
+
+    boolean isEnabled = true;
+
 // ------------------------ INTERFACE METHODS ------------------------
 
 
@@ -16,6 +20,21 @@ public class PrimitiveSteeringBehavior implements IBehavior {
 
     @Override
     public void Destroy() {
+    }
+
+    @Override
+    public void Disable() {
+        isEnabled = false;
+    }
+
+    @Override
+    public void Enable() {
+        isEnabled = true;
+    }
+
+    @Override
+    public boolean IsEnabled() {
+        return isEnabled;
     }
 
     @Override

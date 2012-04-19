@@ -9,6 +9,12 @@ public interface IBehavior {
 
     void Destroy();
 
+    void Disable();
+
+    void Enable();
+
+    boolean IsEnabled();
+
     boolean MeetsCriteria(GameObject object);
 
     void Update(float dt);

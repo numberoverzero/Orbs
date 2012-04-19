@@ -1,5 +1,6 @@
-package GameObjects;
+package OrbGame;
 
+import GameObjects.GameObject;
 import Rendering.RenderLayer;
 import Rendering.RenderPass;
 import com.badlogic.gdx.graphics.Color;
@@ -18,6 +19,11 @@ public class Orb extends GameObject {
     public int Size;
 
 // --------------------------- CONSTRUCTORS ---------------------------
+
+    public Orb(Orb orb) {
+        super(orb);
+        Size = orb.Size;
+    }
 
     public Orb(int size, int health, boolean active, boolean fireOnCreateEvent) {
         super(health, active, fireOnCreateEvent);
