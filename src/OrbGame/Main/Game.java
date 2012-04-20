@@ -1,5 +1,6 @@
 package OrbGame.Main;
 
+import GameEvents.GameEventManager;
 import GameObjects.Behaviors.IBehavior;
 import GameObjects.Behaviors.OrbitBehavior;
 import GameObjects.Behaviors.PrimitiveSteeringBehavior;
@@ -25,18 +26,23 @@ public class Game implements ApplicationListener {
     static SpriteBatch batch;
     static Texture texture;
     static int width = 100, height = 50;
-    GameObjectIterable<Orb> orbs = new GameObjectIterable<Orb>();
+    GameObjectIterable<Orb> playerOrbs = new GameObjectIterable<Orb>();
+    GameObjectIterable<Orb> enemyOrbs = new GameObjectIterable<Orb>();
     PhysicsSystem physicsSystem = new PhysicsSystem();
-    int nOrbs = 10;
+    int nOrbs = 100;
+    float orbSize = 10;
 
     int centerX, centerY;
+    GameObject playerCenter = new GameObject(1);
     private ShaderProgram shader;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
     public Game() {
-        orbs.Hostility = Hostility.Player;
-        physicsSystem.player = orbs;
+        playerOrbs.Hostility = Hostility.Player;
+        enemyOrbs.Hostility = Hostility.Enemy;
+        physicsSystem.player = playerOrbs;
+        physicsSystem.enemy = enemyOrbs;
     }
 
 // ------------------------ INTERFACE METHODS ------------------------
@@ -48,7 +54,8 @@ public class Game implements ApplicationListener {
     public void create() {
         batch = new SpriteBatch();
         SetupShader();
-        MakeOrbs();
+        MakeOrbs(Hostility.Player);
+        MakeOrbs(Hostility.Enemy);
     }
 
     @Override
@@ -58,12 +65,16 @@ public class Game implements ApplicationListener {
     @Override
     public void render() {
         float dt = Gdx.graphics.getDeltaTime();
-        orbs.Update(dt);
+        playerOrbs.Update(dt);
+        enemyOrbs.Update(dt);
         physicsSystem.Update(dt);
+
+        GameEventManager.GlobalEventManager().Update(dt);
 
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        orbs.Draw(batch, RenderPass.Effects);
+        playerOrbs.Draw(batch, RenderPass.Effects);
+        enemyOrbs.Draw(batch, RenderPass.Effects);
         batch.end();
     }
 
@@ -82,26 +93,28 @@ public class Game implements ApplicationListener {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    void MakeOrbs() {
+    void MakeOrbs(Hostility hostility) {
         centerX = Gdx.graphics.getWidth() / 2;
         centerY = Gdx.graphics.getHeight() / 2;
+        playerCenter.Physics.Position = new Vector2(centerX, centerY);
+
+        GameObjectIterable<Orb> orbs = hostility == Hostility.Player ? playerOrbs : enemyOrbs;
         Orb orb;
         for (int i = 0; i < nOrbs; i++) {
-            orb = new Orb(10, 4, true, true);
-            orb.Physics.Position = new Vector2(centerX + 80, centerY);
-            //orb.Hostility = Hostility.Player;
+            orb = new Orb(orbSize, 4, true, true);
+            orb.Health = 5000;
+            orb.Physics.Position = new Vector2(centerX, centerY);
+            orb.Physics.Dimensions = new Vector2(orbSize, orbSize);
             orb.Colors.SetColor(Hostility.Player, RenderLayer.Base, new Color(72 / 255f, 61 / 255f, 139 / 255f, 255 / 255f));
             orb.Colors.SetColor(Hostility.Player, RenderLayer.Highlight, new Color(106 / 255f, 90 / 255f, 205 / 255f, 255 / 255f));
+            orb.Colors.SetColor(Hostility.Enemy, RenderLayer.Base, new Color(255 / 255f, 0 / 255f, 0 / 255f, 255 / 255f));
+            orb.Colors.SetColor(Hostility.Enemy, RenderLayer.Highlight, new Color(189 / 255f, 50 / 255f, 50 / 255f, 255 / 255f));
 
-            GameObject orbitTarget = new GameObject(1, true, false);
-            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
-            IBehavior orbitBehavior = new OrbitBehavior(orbitTarget);
-            orbitTarget.Physics.Position = new Vector2(centerX, centerY);
+            IBehavior orbitBehavior = new OrbitBehavior(playerCenter);
             orb.AddBehavior(orbitBehavior);
 
             IBehavior steering = new PrimitiveSteeringBehavior();
             orb.AddBehavior(steering);
-
 
             orbs.AddGameObject(orb);
         }

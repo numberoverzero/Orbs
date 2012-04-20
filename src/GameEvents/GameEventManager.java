@@ -26,7 +26,7 @@ public class GameEventManager {
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
-    public GameEventManager() {
+    private GameEventManager() {
         isUpdating = false;
         events = new ArrayList<GameEvent>();
         queuedEvents = new ArrayList<GameEvent>();

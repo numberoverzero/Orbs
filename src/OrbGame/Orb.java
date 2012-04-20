@@ -19,7 +19,7 @@ public class Orb extends GameObject {
 // ------------------------------ FIELDS ------------------------------
 
     static final float BORDER_PCT = 0.04f;
-    public int Size;
+    public float Size;
 
 // --------------------------- CONSTRUCTORS ---------------------------
 
@@ -28,7 +28,7 @@ public class Orb extends GameObject {
         Size = orb.Size;
     }
 
-    public Orb(int size, int health, boolean active, boolean fireOnCreateEvent) {
+    public Orb(float size, int health, boolean active, boolean fireOnCreateEvent) {
         super(health, active, fireOnCreateEvent);
         Size = size;
     }
@@ -37,6 +37,8 @@ public class Orb extends GameObject {
 
     @Override
     public void Draw(SpriteBatch batch, RenderPass pass) {
+        if (!Active)
+            return;
         if (pass == RenderPass.Effects) {
             Color color;
             Vector2 dimensions = new Vector2(Size, Size);
@@ -67,5 +69,12 @@ public class Orb extends GameObject {
                 }
             }
         }
+    }
+
+    @Override
+    public void Update(float dt) {
+        super.Update(dt);
+        if (Health < 0)
+            Active = false;
     }
 }

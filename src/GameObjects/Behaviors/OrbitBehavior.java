@@ -75,9 +75,9 @@ public class OrbitBehavior implements IBehavior {
     public boolean MeetsCriteria(GameObject object) {
         if (object == null || !object.Active)
             return false;
-        return (!object.HasOrder() ||
-                (object.CurrentOrder == Order.Seek) ||
-                (object.CurrentOrder == Order.Hover));
+        return (object.CurrentOrder == Order.Seek ||
+                object.CurrentOrder == Order.Hover ||
+                !object.HasOrder());
     }
 
     @Override
@@ -118,7 +118,7 @@ public class OrbitBehavior implements IBehavior {
     private void UpdateOrder(GameObject object) {
         // Do some magic here to adjust max speed, and set acceleration to the center of the orbit.
 
-        Vector2 tarPos = orbitObject.Physics.Position;
+        Vector2 tarPos = GetOrbitTargetPos();
         Vector2 objPos = object.Physics.Position;
         float distance2 = tarPos.dst2(objPos);
 
@@ -129,7 +129,8 @@ public class OrbitBehavior implements IBehavior {
             float hoverDist = orbitRadius + objDim * (2 + correctionPct / 100);
             if (distance2 > hoverDist * hoverDist)
                 object.CurrentOrder = Order.Seek;
-        } else if (!object.HasOrder() || object.CurrentOrder == Order.Seek) {
+        }
+        if (!object.HasOrder() || object.CurrentOrder == Order.Seek) {
             float seekDist = orbitRadius + 2 * objDim;
             if (distance2 <= seekDist * seekDist) {
                 object.CurrentOrder = Order.Hover;
@@ -143,5 +144,11 @@ public class OrbitBehavior implements IBehavior {
                 }
             }
         }
+    }
+
+    private Vector2 GetOrbitTargetPos() {
+        Vector2 orbitPos = Util.FromAngle(orbitElapsed * 2 * Math.PI / orbitPeriod);
+        orbitPos.mul(orbitRadius).add(orbitObject.Physics.Position);
+        return orbitPos;
     }
 }

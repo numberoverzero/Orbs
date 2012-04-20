@@ -27,15 +27,15 @@ public class CollisionResult {
 
 // -------------------------- OTHER METHODS --------------------------
 
-    public boolean IsPartOfCollision(GameObject gObject) {
-        return gObject == collider1 || gObject == collider2;
-    }
-
     public GameObject GetOther(GameObject gObject) {
         if (!Collided)
             return null;
         if (gObject != collider1 && gObject != collider2)
             return null;
         return gObject == collider2 ? collider1 : collider2;
+    }
+
+    public boolean IsPartOfCollision(GameObject gObject) {
+        return gObject == collider1 || gObject == collider2;
     }
 }
