@@ -5,10 +5,12 @@
       <w>accel</w>
       <w>collider</w>
       <w>convertable</w>
+      <w>coords</w>
       <w>halign</w>
       <w>iter</w>
       <w>iterable</w>
       <w>lerp</w>
+      <w>mediump</w>
       <w>outx</w>
       <w>outy</w>
       <w>rotx</w>

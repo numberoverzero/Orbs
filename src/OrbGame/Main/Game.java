@@ -114,6 +114,6 @@ public class Game implements ApplicationListener {
         if (!shader.isCompiled()) {
             Gdx.app.log("Game", shader.getLog());
         }
-        batch.setShader(null);
+        batch.setShader(shader);
     }
 }
